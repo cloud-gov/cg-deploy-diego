@@ -22,13 +22,13 @@ spiff merge \
 sed -i -- 's/10.10/10.9/g' $CF_MANIFEST
 
 spiff merge \
-  diego-release/manifest-generation/config-from-cf.yml \
-  diego-release/manifest-generation/config-from-cf-internal.yml \
+  diego-release-repo/manifest-generation/config-from-cf.yml \
+  diego-release-repo/manifest-generation/config-from-cf-internal.yml \
   $CF_MANIFEST \
   > $SCRIPT_PATH/cf-conf-staging.yml
 
 spiff merge \
-  diego-release/manifest-generation/diego.yml \
+  diego-release-repo/manifest-generation/diego.yml \
   $CF_MANIFEST_PATH/cf-deployment.yml \
   $CF_MANIFEST_PATH/cf-resource-pools.yml \
   $CF_MANIFEST_PATH/cf-jobs.yml \
@@ -39,6 +39,6 @@ spiff merge \
   > ${DIEGO_MANIFEST}.intermediate
 
 spiff merge \
-  diego-release/manifest-generation/misc-templates/bosh.yml \
+  diego-release-repo/manifest-generation/misc-templates/bosh.yml \
   ${DIEGO_MANIFEST}.intermediate \
   > $DIEGO_MANIFEST
