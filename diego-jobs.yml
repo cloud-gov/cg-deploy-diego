@@ -1,0 +1,28 @@
+meta:
+  common_templates:
+  - name: nessus-agent
+    release: nessus-agent
+  - name: harden
+    release: fisma
+  - name: collectd
+    release: collectd
+  - name: tripwire
+    release: tripwire
+  - name: awslogs
+    release: awslogs
+
+base_job_templates: (( merge ))
+  access: (( meta.common_templates ))
+  <<: (( merge ))
+  brain: (( meta.common_templates ))
+  <<: (( merge ))
+  cc_bridge: (( meta.common_templates ))
+  <<: (( merge ))
+  cell: (( meta.common_templates ))
+  <<: (( merge ))
+  database: (( meta.common_templates ))
+  <<: (( merge ))
+  route_emitter: (( meta.common_templates ))
+  <<: (( merge ))
+  colocated: (( meta.common_templates ))
+  <<: (( merge ))

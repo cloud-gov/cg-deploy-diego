@@ -37,4 +37,4 @@ spiff merge \
 
 spiff merge \
   diego-release/manifest-generation/misc-templates/bosh.yml \
-  $DIEGO_MANIFEST
+  > $DIEGO_MANIFEST
