@@ -56,6 +56,7 @@ resources:
     branch: {{diego-manifests-git-branch-staging}}
     paths:
     - diego-*.yml
+    - generate*
 - name: diego-manifests-prod
   type: git
   source:
@@ -261,7 +262,7 @@ jobs:
 #        BOSH_PASSWORD: {{diego-deployment-staging-bosh-password}}
 #        BOSH_TARGET: {{diego-deployment-staging-bosh-target}}
 #        BOSH_CERT: bosh.pem
-    - task: diego-stage-manifest
+    - task: generate-diego-stage-manifest
       config:
         platform: linux
         image_resource:

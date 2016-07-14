@@ -32,7 +32,7 @@ spiff merge \
   $CF_MANIFEST_PATH/cf-deployment.yml \
   $CF_MANIFEST_PATH/cf-resource-pools.yml \
   $CF_MANIFEST_PATH/cf-jobs.yml \
-  $CF_MANIFEST_PATH/diego-jobs.yml \
+  diego-release-repo/diego-jobs.yml \
   $CF_MANIFEST_PATH/cf-properties.yml \
   $CF_MANIFEST_PATH/cf-infrastructure-aws-staging.yml \
   $SCRIPT_PATH/cf-conf-staging.yml \
