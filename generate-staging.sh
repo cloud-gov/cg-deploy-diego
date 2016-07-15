@@ -29,12 +29,9 @@ spiff merge \
 
 spiff merge \
   diego-release-repo/manifest-generation/diego.yml \
-  $CF_MANIFEST_PATH/cf-deployment.yml \
-  $CF_MANIFEST_PATH/cf-resource-pools.yml \
-  $CF_MANIFEST_PATH/cf-jobs.yml \
-  diego-manifests-staging/diego-jobs.yml \
-  $CF_MANIFEST_PATH/cf-properties.yml \
-  $CF_MANIFEST_PATH/cf-infrastructure-aws-staging.yml \
+  diego-release-repo/examples/aws/templates/diego/property-overrides.yml
+  diego-release-repo/manifest-generation/misc-templates/aws-iaas-settings.yml \
+  $SCRIPT_PATH/diego-jobs.yml \
   $SCRIPT_PATH/cf-conf-staging.yml \
   > ${DIEGO_MANIFEST}.intermediate
 

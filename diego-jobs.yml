@@ -12,17 +12,24 @@ meta:
     release: awslogs
 
 base_job_templates: (( merge ))
-  access: (( meta.common_templates ))
+  access:
   <<: (( merge ))
-  brain: (( meta.common_templates ))
+    (( meta.common_templates ))
+  brain:
   <<: (( merge ))
-  cc_bridge: (( meta.common_templates ))
+    (( meta.common_templates ))
+  cc_bridge:
   <<: (( merge ))
-  cell: (( meta.common_templates ))
+    (( meta.common_templates ))
+  cell:
   <<: (( merge ))
-  database: (( meta.common_templates ))
+    (( meta.common_templates ))
+  database:
   <<: (( merge ))
-  route_emitter: (( meta.common_templates ))
+    (( meta.common_templates ))
+  route_emitter:
   <<: (( merge ))
-  colocated: (( meta.common_templates ))
+    (( meta.common_templates ))
+  colocated:
   <<: (( merge ))
+    (( meta.common_templates ))
