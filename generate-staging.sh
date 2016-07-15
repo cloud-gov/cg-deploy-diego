@@ -29,7 +29,7 @@ spiff merge \
 
 spiff merge \
   diego-release-repo/manifest-generation/diego.yml \
-  diego-release-repo/examples/aws/templates/diego/property-overrides.yml
+  diego-release-repo/examples/aws/templates/diego/property-overrides.yml \
   diego-release-repo/manifest-generation/misc-templates/aws-iaas-settings.yml \
   $SCRIPT_PATH/diego-jobs.yml \
   $SCRIPT_PATH/cf-conf-staging.yml \
