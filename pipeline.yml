@@ -270,6 +270,7 @@ jobs:
           - common-staging/secrets.yml
           - {{cf-deployment-staging}}
           - {{diego-deployment-staging-bosh-cacert}}
+          - {{diego-deployment-staging-bosh-target}}
           - {{diego-deployment-staging-bosh-username}}
           - {{diego-deployment-staging-bosh-password}}
           - generate-diego-stage-manifest/diego-staging-manifest.yml
