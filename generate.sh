@@ -12,7 +12,6 @@ DIEGO_MANIFEST=$7
 
 SCRIPT_PATH=$(dirname $0)
 SECRETS_PATH=$(dirname $SECRETS)
-CF_MANIFEST_PATH=$(dirname $CF_MANIFEST)
 
 
 # Download the CF manifest
