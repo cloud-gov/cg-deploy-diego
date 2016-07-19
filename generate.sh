@@ -3,38 +3,31 @@
 set -e -x
 
 SECRETS=$1
-CF_MANIFEST=$2
-DIEGO_MANIFEST=$3
+CF_DEPLOYMENT=$2
+BOSH_CACERT=$3
+BOSH_TARGET=$4
+BOSH_USERNAME=$5
+BOSH_PASSWORD=$6
+DIEGO_MANIFEST=$7
 
 SCRIPT_PATH=$(dirname $0)
 SECRETS_PATH=$(dirname $SECRETS)
 CF_MANIFEST_PATH=$(dirname $CF_MANIFEST)
 
-spiff merge \
-  $CF_MANIFEST_PATH/cf-deployment.yml \
-  $CF_MANIFEST_PATH/cf-resource-pools.yml \
-  $CF_MANIFEST_PATH/cf-jobs.yml \
-  $CF_MANIFEST_PATH/cf-properties.yml \
-  $CF_MANIFEST_PATH/cf-infrastructure-aws.yml \
-  $SECRETS \
-  > $CF_MANIFEST
 
-spiff merge \
-  diego-release-repo/manifest-generation/config-from-cf.yml \
-  diego-release-repo/manifest-generation/config-from-cf-internal.yml \
-  $CF_MANIFEST \
-  > $SCRIPT_PATH/cf-conf.yml
+# Download the CF manifest
+bosh --ca-cert $BOSH_CACERT target $BOSH_TARGET
+bosh login <<EOF 1>/dev/null
+$BOSH_USERNAME
+$BOSH_PASSWORD
+EOF
+bosh download manifest $CF_DEPLOYMENT $SCRIPT_PATH/${CF_DEPLOYMENT}.yml
 
-spiff merge \
-  diego-release-repo/manifest-generation/diego.yml \
-  $CF_MANIFEST_PATH/cf-deployment.yml \
-  $CF_MANIFEST_PATH/cf-resource-pools.yml \
-  $CF_MANIFEST_PATH/cf-jobs.yml \
-  $CF_MANIFEST_PATH/cf-properties.yml \
-  $CF_MANIFEST_PATH/cf-infrastructure-aws.yml \
-  $SCRIPT_PATH/cf-conf.yml \
-  > $DIEGO_MANIFEST
+cd diego-release-repo
 
-spiff merge \
-  diego-release-repo/manifest-generation/misc-templates/bosh.yml \
-  > $DIEGO_MANIFEST
+scripts/generate-deployment-manifest \
+  -c $SCRIPT_PATH/${CF_DEPLOYMENT}.yml \
+  -i $SECRETS \
+  -p $SECRETS \
+  -n $SCRIPT_PATH/diego-jobs.yml \
+  -x > $SCRIPT_PATH/$DIEGO_MANIFEST

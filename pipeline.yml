@@ -23,29 +23,29 @@ resources:
   source:
     uri: {{pipeline-tasks-git-url}}
     branch: {{pipeline-tasks-git-branch}}
-- name: slack
-  type: slack-notification
-  source:
-    url: {{slack-webhook-url}}
-- name: cf-manifests-staging
-  type: git
-  source:
-    uri: {{cf-manifests-git-url}}
-    branch: {{cf-manifests-git-branch-staging}}
-    paths:
-    - cf-*.yml
-- name: cf-manifests-prod
-  type: git
-  source:
-    uri: {{cf-manifests-git-url}}
-    branch: {{cf-manifests-git-branch-prod}}
-    paths:
-    - cf-*.yml
+#- name: slack
+#  type: slack-notification
+#  source:
+#    url: {{slack-webhook-url}}
+#- name: cf-manifests-staging
+#  type: git
+#  source:
+#    uri: {{cf-manifests-git-url}}
+#    branch: {{cf-manifests-git-branch-staging}}
+#    paths:
+#    - cf-*.yml
+#- name: cf-manifests-prod
+#  type: git
+#  source:
+#    uri: {{cf-manifests-git-url}}
+#    branch: {{cf-manifests-git-branch-prod}}
+#    paths:
+#    - cf-*.yml
 - name: diego-release-repo
   type: git
   source:
     uri: {{diego-release-repo-git-url}}
-# master
+    # master
     branch: {{diego-release-repo-git-branch-staging}}
     paths:
     - releases/diego-*.yml
@@ -71,7 +71,7 @@ resources:
     bosh_cert: bosh.pem
     bucket_name: {{diego-private-staging-bucket}}
     secret_access_key: {{ci-secret-access-key}}
-    secrets_file: cf-staging.yml
+    secrets_file: diego-staging.yml
     secrets_passphrase: {{diego-private-staging-passphrase}}
     region: {{aws-region}}
 - name: common-prod
@@ -108,79 +108,70 @@ resources:
   type: bosh-io-release
   source:
     repository: cloudfoundry/cflinuxfs2-rootfs-release
-- name: cg-s3-nessus-agent-release
-  type: s3
-  source:
-    access_key_id: {{s3-bosh-releases-access-key-id}}
-    bucket: {{s3-bosh-releases-bucket}}
-    private: true
-    regexp: nessus-agent-(.*).tgz
-    secret_access_key: {{s3-bosh-releases-secret-access-key}}
-    region_name: {{aws-region}}
-- name: cg-s3-fisma-release
-  type: s3
-  source:
-    access_key_id: {{s3-bosh-releases-access-key-id}}
-    bucket: {{s3-bosh-releases-bucket}}
-    private: true
-    regexp: fisma-(.*).tgz
-    secret_access_key: {{s3-bosh-releases-secret-access-key}}
-    region_name: {{aws-region}}
-- name: cg-s3-newrelic-release
-  type: s3
-  source:
-    access_key_id: {{s3-bosh-releases-access-key-id}}
-    bucket: {{s3-bosh-releases-bucket}}
-    private: true
-    regexp: newrelic-(.*).tgz
-    secret_access_key: {{s3-bosh-releases-secret-access-key}}
-    region_name: {{aws-region}}
-- name: cg-s3-collectd-release
-  type: s3
-  source:
-    access_key_id: {{s3-bosh-releases-access-key-id}}
-    bucket: {{s3-bosh-releases-bucket}}
-    private: true
-    regexp: collectd-(.*).tgz
-    secret_access_key: {{s3-bosh-releases-secret-access-key}}
-    region_name: {{aws-region}}
-#- name: cg-s3-18f-diego-release
+#- name: cg-s3-nessus-agent-release
 #  type: s3
 #  source:
 #    access_key_id: {{s3-bosh-releases-access-key-id}}
 #    bucket: {{s3-bosh-releases-bucket}}
 #    private: true
-#    regexp: 18f-diego-(.*).tgz
+#    regexp: nessus-agent-(.*).tgz
 #    secret_access_key: {{s3-bosh-releases-secret-access-key}}
 #    region_name: {{aws-region}}
-- name: cg-s3-secureproxy-release
-  type: s3
-  source:
-    access_key_id: {{s3-bosh-releases-access-key-id}}
-    bucket: {{s3-bosh-releases-bucket}}
-    private: true
-    regexp: secureproxy-(.*).tgz
-    secret_access_key: {{s3-bosh-releases-secret-access-key}}
-    region_name: {{aws-region}}
-- name: cg-s3-tripwire-release
-  type: s3
-  source:
-    access_key_id: {{s3-bosh-releases-access-key-id}}
-    bucket: {{s3-bosh-releases-bucket}}
-    private: true
-    regexp: tripwire-(.*).tgz
-    secret_access_key: {{s3-bosh-releases-secret-access-key}}
-    region_name: {{aws-region}}
-- name: cg-s3-awslogs-release
-  type: s3
-  source:
-    access_key_id: {{s3-bosh-releases-access-key-id}}
-    bucket: {{s3-bosh-releases-bucket}}
-    private: true
-    regexp: awslogs-(.*).tgz
-    secret_access_key: {{s3-bosh-releases-secret-access-key}}
-    region_name: {{aws-region}}
-- name: diego-deployment-staging
+#- name: cg-s3-fisma-release
+#  type: s3
+#  source:
+#    access_key_id: {{s3-bosh-releases-access-key-id}}
+#    bucket: {{s3-bosh-releases-bucket}}
+#    private: true
+#    regexp: fisma-(.*).tgz
+#    secret_access_key: {{s3-bosh-releases-secret-access-key}}
+#    region_name: {{aws-region}}
+#- name: cg-s3-newrelic-release
+#  type: s3
+#  source:
+#    access_key_id: {{s3-bosh-releases-access-key-id}}
+#    bucket: {{s3-bosh-releases-bucket}}
+#    private: true
+#    regexp: newrelic-(.*).tgz
+#    secret_access_key: {{s3-bosh-releases-secret-access-key}}
+#    region_name: {{aws-region}}
+#- name: cg-s3-collectd-release
+#  type: s3
+#  source:
+#    access_key_id: {{s3-bosh-releases-access-key-id}}
+#    bucket: {{s3-bosh-releases-bucket}}
+#    private: true
+#    regexp: collectd-(.*).tgz
+#    secret_access_key: {{s3-bosh-releases-secret-access-key}}
+#    region_name: {{aws-region}}
+##- name: cg-s3-18f-diego-release
+##  type: s3
+##  source:
+##    access_key_id: {{s3-bosh-releases-access-key-id}}
+##    bucket: {{s3-bosh-releases-bucket}}
+##    private: true
+##    regexp: 18f-diego-(.*).tgz
+##    secret_access_key: {{s3-bosh-releases-secret-access-key}}
+##    region_name: {{aws-region}}
+#- name: cg-s3-tripwire-release
+#  type: s3
+#  source:
+#    access_key_id: {{s3-bosh-releases-access-key-id}}
+#    bucket: {{s3-bosh-releases-bucket}}
+#    private: true
+#    regexp: tripwire-(.*).tgz
+#    secret_access_key: {{s3-bosh-releases-secret-access-key}}
+#    region_name: {{aws-region}}
+#- name: cg-s3-awslogs-release
+#  type: s3
+#  source:
+#    access_key_id: {{s3-bosh-releases-access-key-id}}
+#    bucket: {{s3-bosh-releases-bucket}}
+#    private: true
+#    regexp: awslogs-(.*).tgz
+#    secret_access_key: {{s3-bosh-releases-secret-access-key}}
+#    region_name: {{aws-region}}
+- name: deploy-diego-deployment-staging
   type: 18f-bosh-deployment
   source:
     target: {{diego-deployment-staging-bosh-target}}
@@ -188,7 +179,7 @@ resources:
     password: {{diego-deployment-staging-bosh-password}}
     deployment: {{diego-deployment-staging-bosh-deployment}}
     ignore_ssl: true
-- name: diego-deployment-prod
+- name: deploy-diego-deployment-prod
   type: 18f-bosh-deployment
   source:
     target: {{diego-deployment-prod-bosh-target}}
@@ -216,8 +207,8 @@ jobs:
   - aggregate:
     - get: pipeline-tasks
       trigger: false
-    - get: cf-manifests-staging
-      trigger: true
+#    - get: cf-manifests-staging
+#      trigger: true
     - get: diego-manifests-staging
       trigger: true
     - get: diego-release-repo
@@ -227,22 +218,22 @@ jobs:
       trigger: true
     - get: diego-stemcell
       trigger: false
-    - get: cg-s3-nessus-agent-release
-      trigger: true
-    - get: cg-s3-fisma-release
-      trigger: true
-    - get: cg-s3-newrelic-release
-      trigger: true
-    - get: cg-s3-collectd-release
-      trigger: true
-#    - get: cg-s3-18f-diego-release
+#    - get: cg-s3-nessus-agent-release
 #      trigger: true
-    - get: cg-s3-secureproxy-release
-      trigger: true
-    - get: cg-s3-tripwire-release
-      trigger: true
-    - get: cg-s3-awslogs-release
-      trigger: true
+#    - get: cg-s3-fisma-release
+#      trigger: true
+#    - get: cg-s3-newrelic-release
+#      trigger: true
+#    - get: cg-s3-collectd-release
+#      trigger: true
+##    - get: cg-s3-18f-diego-release
+##      trigger: true
+#    - get: cg-s3-secureproxy-release
+#      trigger: true
+#    - get: cg-s3-tripwire-release
+#      trigger: true
+#    - get: cg-s3-awslogs-release
+#      trigger: true
     - get: diego-release
       trigger: true
     - get: cflinuxfs2-rootfs-release
@@ -271,35 +262,36 @@ jobs:
             repository: 18fgsa/concourse-task
         inputs:
         - name: common-staging
-        - name: cf-manifests-staging
         - name: diego-manifests-staging
         - name: diego-release-repo
         run:
-          path: diego-manifests-staging/generate-staging.sh
+          path: diego-manifests-staging/generate.sh
           args:
           - common-staging/secrets.yml
-          - cf-manifests-staging/cf-staging-manifest.yml
-#          - cf-stage-manifest/cf-staging-manifest.yml
-          - diego-stage-manifest/diego-staging-manifest.yml
+          - {{cf-deployment-staging}}
+          - {{diego-deployment-staging-bosh-cacert}}
+          - {{diego-deployment-staging-bosh-username}}
+          - {{diego-deployment-staging-bosh-password}}
+          - generate-diego-stage-manifest/diego-staging-manifest.yml
         outputs:
-        - name: diego-stage-manifest
-  - put: diego-deployment-staging
+        - name: generate-diego-stage-manifest
+  - put: deploy-diego-deployment-staging
     params:
-      cert: common-staging/boshCA.crt
-      manifest: diego-stage-manifest/diego-staging-manifest.yml
+      cert: {{diego-deployment-staging-bosh-cacert}}
+      manifest: generate-diego-stage-manifest/diego-staging-manifest.yml
       stemcells:
         - diego-stemcell/*.tgz
       releases:
 # XXX Add rootfs, garden, etc here?
         - diego-release/*.tgz
-        - cg-s3-nessus-agent-release/*.tgz
-        - cg-s3-fisma-release/*.tgz
-        - cg-s3-newrelic-release/*.tgz
-        - cg-s3-collectd-release/*.tgz
-#        - cg-s3-18f-diego-release/*.tgz
-        - cg-s3-secureproxy-release/*.tgz
-        - cg-s3-tripwire-release/*.tgz
-        - cg-s3-awslogs-release/*.tgz
+#        - cg-s3-nessus-agent-release/*.tgz
+#        - cg-s3-fisma-release/*.tgz
+#        - cg-s3-newrelic-release/*.tgz
+#        - cg-s3-collectd-release/*.tgz
+##        - cg-s3-18f-diego-release/*.tgz
+#        - cg-s3-secureproxy-release/*.tgz
+#        - cg-s3-tripwire-release/*.tgz
+#        - cg-s3-awslogs-release/*.tgz
 #    on_success:
 #      put: slack
 #      params:
@@ -318,126 +310,126 @@ jobs:
 #        channel: {{slack-channel}}
 #        username: {{slack-username}}
 #        icon_url: {{slack-icon-url}}
-- name: smoke-tests-staging
-  plan:
-  - aggregate:
-    - get: pipeline-tasks
-      trigger: false
-    - get: diego-manifests-staging
-      trigger: true
-      passed: [deploy-diego-staging]
-    - get: common
-      resource: common-staging
-      trigger: true
-      passed: [deploy-diego-staging]
-    - get: diego-stemcell
-      trigger: false
-      passed: [deploy-diego-staging]
-    - get: cg-s3-nessus-agent-release
-      trigger: true
-      passed: [deploy-diego-staging]
-    - get: cg-s3-fisma-release
-      trigger: true
-      passed: [deploy-diego-staging]
-    - get: cg-s3-newrelic-release
-      trigger: true
-      passed: [deploy-diego-staging]
-    - get: cg-s3-collectd-release
-      trigger: true
-      passed: [deploy-diego-staging]
-#    - get: cg-s3-18f-diego-release
+#- name: smoke-tests-staging
+#  plan:
+#  - aggregate:
+#    - get: pipeline-tasks
+#      trigger: false
+#    - get: diego-manifests-staging
 #      trigger: true
-      passed: [deploy-diego-staging]
-    - get: cg-s3-secureproxy-release
-      trigger: true
-      passed: [deploy-diego-staging]
-    - get: cg-s3-tripwire-release
-      trigger: true
-      passed: [deploy-diego-staging]
-    - get: cg-s3-awslogs-release
-      trigger: true
-      passed: [deploy-diego-staging]
-    - get: diego-release
-      trigger: true
-      passed: [deploy-diego-staging]
-  - task: run-errand
-    file: pipeline-tasks/bosh-errand.yml
-    params:
-      BOSH_TARGET: {{diego-deployment-staging-bosh-target}}
-      BOSH_USERNAME: {{diego-deployment-staging-bosh-username}}
-      BOSH_PASSWORD: {{diego-deployment-staging-bosh-password}}
-      BOSH_DEPLOYMENT_NAME: {{diego-deployment-staging-bosh-deployment}}
-      BOSH_ERRAND: smoke_tests
-      BOSH_CACERT: common/boshCA.crt
-#    on_success:
-#      put: slack
-#      params:
-#        text: |
-#          :white_check_mark: Smoke Tests for Diego on staging PASSED
-#          <https://ci.cloud.gov/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
-#        channel: {{slack-channel}}
-#        username: {{slack-username}}
-#        icon_url: {{slack-icon-url}}
-#    on_failure:
-#      put: slack
-#      params:
-#        text: |
-#          :x: Smoke Tests for Diego on staging FAILED
-#          <https://ci.cloud.gov/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
-#        channel: {{slack-channel}}
-#        username: {{slack-username}}
-#        icon_url: {{slack-icon-url}}
-- name: acceptance-tests-staging
-  plan:
-  - aggregate:
-    - get: pipeline-tasks
-      trigger: false
-    - get: diego-manifests-staging
-      trigger: true
-      passed: [smoke-tests-staging]
-    - get: common
-      resource: common-staging
-      trigger: true
-      passed: [smoke-tests-staging]
-    - get: diego-stemcell
-      trigger: false
-      passed: [smoke-tests-staging]
-    - get: cg-s3-tripwire-release
-      trigger: true
-      passed: [smoke-tests-staging]
-    - get: cg-s3-awslogs-release
-      trigger: true
-      passed: [smoke-tests-staging]
-    - get: cg-s3-nessus-agent-release
-      trigger: true
-      passed: [smoke-tests-staging]
-    - get: cg-s3-fisma-release
-      trigger: true
-      passed: [smoke-tests-staging]
-    - get: cg-s3-newrelic-release
-      trigger: true
-      passed: [smoke-tests-staging]
-    - get: cg-s3-collectd-release
-      trigger: true
-      passed: [smoke-tests-staging]
-#    - get: cg-s3-18f-diego-release
+#      passed: [deploy-diego-staging]
+#    - get: common
+#      resource: common-staging
 #      trigger: true
-      passed: [smoke-tests-staging]
-    - get: cg-s3-secureproxy-release
-      trigger: true
-      passed: [smoke-tests-staging]
-    - get: diego-release
-      trigger: true
-      passed: [smoke-tests-staging]
-  - task: run-errand
-    file: pipeline-tasks/bosh-errand.yml
-    params:
-      BOSH_TARGET: {{diego-deployment-staging-bosh-target}}
-      BOSH_USERNAME: {{diego-deployment-staging-bosh-username}}
-      BOSH_PASSWORD: {{diego-deployment-staging-bosh-password}}
-      BOSH_DEPLOYMENT_NAME: {{diego-deployment-staging-bosh-deployment}}
-      BOSH_ERRAND: acceptance_tests
-      BOSH_CACERT: common/boshCA.crt
+#      passed: [deploy-diego-staging]
+#    - get: diego-stemcell
+#      trigger: false
+#      passed: [deploy-diego-staging]
+#    - get: cg-s3-nessus-agent-release
+#      trigger: true
+#      passed: [deploy-diego-staging]
+#    - get: cg-s3-fisma-release
+#      trigger: true
+#      passed: [deploy-diego-staging]
+#    - get: cg-s3-newrelic-release
+#      trigger: true
+#      passed: [deploy-diego-staging]
+#    - get: cg-s3-collectd-release
+#      trigger: true
+#      passed: [deploy-diego-staging]
+##    - get: cg-s3-18f-diego-release
+##      trigger: true
+#      passed: [deploy-diego-staging]
+#    - get: cg-s3-secureproxy-release
+#      trigger: true
+#      passed: [deploy-diego-staging]
+#    - get: cg-s3-tripwire-release
+#      trigger: true
+#      passed: [deploy-diego-staging]
+#    - get: cg-s3-awslogs-release
+#      trigger: true
+#      passed: [deploy-diego-staging]
+#    - get: diego-release
+#      trigger: true
+#      passed: [deploy-diego-staging]
+#  - task: run-errand
+#    file: pipeline-tasks/bosh-errand.yml
+#    params:
+#      BOSH_TARGET: {{diego-deployment-staging-bosh-target}}
+#      BOSH_USERNAME: {{diego-deployment-staging-bosh-username}}
+#      BOSH_PASSWORD: {{diego-deployment-staging-bosh-password}}
+#      BOSH_DEPLOYMENT_NAME: {{diego-deployment-staging-bosh-deployment}}
+#      BOSH_ERRAND: smoke_tests
+#      BOSH_CACERT: common/boshCA.crt
+##    on_success:
+##      put: slack
+##      params:
+##        text: |
+##          :white_check_mark: Smoke Tests for Diego on staging PASSED
+##          <https://ci.cloud.gov/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
+##        channel: {{slack-channel}}
+##        username: {{slack-username}}
+##        icon_url: {{slack-icon-url}}
+##    on_failure:
+##      put: slack
+##      params:
+##        text: |
+##          :x: Smoke Tests for Diego on staging FAILED
+##          <https://ci.cloud.gov/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
+##        channel: {{slack-channel}}
+##        username: {{slack-username}}
+##        icon_url: {{slack-icon-url}}
+#- name: acceptance-tests-staging
+#  plan:
+#  - aggregate:
+#    - get: pipeline-tasks
+#      trigger: false
+#    - get: diego-manifests-staging
+#      trigger: true
+#      passed: [smoke-tests-staging]
+#    - get: common
+#      resource: common-staging
+#      trigger: true
+#      passed: [smoke-tests-staging]
+#    - get: diego-stemcell
+#      trigger: false
+#      passed: [smoke-tests-staging]
+#    - get: cg-s3-tripwire-release
+#      trigger: true
+#      passed: [smoke-tests-staging]
+#    - get: cg-s3-awslogs-release
+#      trigger: true
+#      passed: [smoke-tests-staging]
+#    - get: cg-s3-nessus-agent-release
+#      trigger: true
+#      passed: [smoke-tests-staging]
+#    - get: cg-s3-fisma-release
+#      trigger: true
+#      passed: [smoke-tests-staging]
+#    - get: cg-s3-newrelic-release
+#      trigger: true
+#      passed: [smoke-tests-staging]
+#    - get: cg-s3-collectd-release
+#      trigger: true
+#      passed: [smoke-tests-staging]
+##    - get: cg-s3-18f-diego-release
+##      trigger: true
+#      passed: [smoke-tests-staging]
+#    - get: cg-s3-secureproxy-release
+#      trigger: true
+#      passed: [smoke-tests-staging]
+#    - get: diego-release
+#      trigger: true
+#      passed: [smoke-tests-staging]
+#  - task: run-errand
+#    file: pipeline-tasks/bosh-errand.yml
+#    params:
+#      BOSH_TARGET: {{diego-deployment-staging-bosh-target}}
+#      BOSH_USERNAME: {{diego-deployment-staging-bosh-username}}
+#      BOSH_PASSWORD: {{diego-deployment-staging-bosh-password}}
+#      BOSH_DEPLOYMENT_NAME: {{diego-deployment-staging-bosh-deployment}}
+#      BOSH_ERRAND: acceptance_tests
+#      BOSH_CACERT: common/boshCA.crt
 #    on_success:
 #      put: slack
 #      params:
