@@ -13,7 +13,6 @@ DIEGO_MANIFEST=$7
 SCRIPT_PATH=$(dirname $0)
 SECRETS_PATH=$(dirname $SECRETS)
 
-
 # Download the CF manifest
 bosh --ca-cert $BOSH_CACERT target $BOSH_TARGET
 bosh login <<EOF 1>/dev/null
@@ -22,9 +21,7 @@ $BOSH_PASSWORD
 EOF
 bosh download manifest $CF_DEPLOYMENT $SCRIPT_PATH/${CF_DEPLOYMENT}.yml
 
-cd diego-release-repo
-
-scripts/generate-deployment-manifest \
+diego-release-repo/scripts/generate-deployment-manifest \
   -c $SCRIPT_PATH/${CF_DEPLOYMENT}.yml \
   -i $SECRETS \
   -p $SECRETS \

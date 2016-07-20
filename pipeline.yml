@@ -273,7 +273,7 @@ jobs:
           - {{diego-deployment-staging-bosh-target}}
           - {{diego-deployment-staging-bosh-username}}
           - {{diego-deployment-staging-bosh-password}}
-          - generate-diego-stage-manifest/diego-staging-manifest.yml
+          - diego-staging-manifest.yml
         outputs:
         - name: generate-diego-stage-manifest
   - put: deploy-diego-deployment-staging
