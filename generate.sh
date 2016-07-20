@@ -14,7 +14,7 @@ SCRIPT_PATH=$(dirname $0)
 SECRETS_PATH=$(dirname $SECRETS)
 
 # Download the CF manifest
-bosh --ca-cert $BOSH_CACERT target $BOSH_TARGET <<EOF
+bosh --ca-cert $BOSH_CACERT target $BOSH_TARGET <<EOF 1>/dev/null
 $BOSH_USERNAME
 $BOSH_PASSWORD
 EOF
