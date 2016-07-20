@@ -108,6 +108,15 @@ resources:
   type: bosh-io-release
   source:
     repository: cloudfoundry/cflinuxfs2-rootfs-release
+- name: stagingbosh-certificate
+  type: s3
+  source:
+    access_key_id: {{ci-access-key-id}}
+    bucket: {{diego-private-stage-bucket}}
+    private: true
+    region_name: {{aws-region}}
+    secret_access_key: {{ci-secret-access-key}}
+    versioned_file: bosh.pem
 #- name: cg-s3-nessus-agent-release
 #  type: s3
 #  source:
@@ -247,7 +256,7 @@ jobs:
       file: pipeline-tasks/upload-release.yml
       input_mapping:
         release: cflinuxfs2-rootfs-release
-        certificate: common-staging
+        certificate: stagingbosh-certificate
       params:
         BOSH_USERNAME: {{diego-deployment-staging-bosh-username}}
         BOSH_PASSWORD: {{diego-deployment-staging-bosh-password}}
