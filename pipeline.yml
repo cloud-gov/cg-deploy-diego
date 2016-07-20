@@ -243,16 +243,16 @@ jobs:
     - get: garden-linux-release
       trigger: true
   - aggregate:
-#    - task: upload-cflinuxfs2-rootfs-release
-#      file: pipeline-tasks/upload-release.yml
-#      input_mapping:
-#        release: cflinuxfs2-rootfs-release
-#        certificate: common-staging/boshCA.crt
-#      params:
-#        BOSH_USERNAME: {{diego-deployment-staging-bosh-username}}
-#        BOSH_PASSWORD: {{diego-deployment-staging-bosh-password}}
-#        BOSH_TARGET: {{diego-deployment-staging-bosh-target}}
-#        BOSH_CERT: bosh.pem
+    - task: upload-cflinuxfs2-rootfs-release
+      file: pipeline-tasks/upload-release.yml
+      input_mapping:
+        release: cflinuxfs2-rootfs-release
+        certificate: common-staging
+      params:
+        BOSH_USERNAME: {{diego-deployment-staging-bosh-username}}
+        BOSH_PASSWORD: {{diego-deployment-staging-bosh-password}}
+        BOSH_TARGET: {{diego-deployment-staging-bosh-target}}
+        BOSH_CERT: bosh.pem
     - task: generate-diego-stage-manifest
       config:
         platform: linux
