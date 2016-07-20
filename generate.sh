@@ -14,7 +14,7 @@ SCRIPT_PATH=$(dirname $0)
 SECRETS_PATH=$(dirname $SECRETS)
 
 # Download the CF manifest
-bosh --ca-cert $BOSH_CACERT target $BOSH_TARGET <<EOF 1>/dev/null
+bosh --ca-cert $BOSH_CACERT target $BOSH_TARGET <<EOF 1>/dev/null 2&>1
 $BOSH_USERNAME
 $BOSH_PASSWORD
 EOF
@@ -25,4 +25,4 @@ diego-release-repo/scripts/generate-deployment-manifest \
   -i $SECRETS \
   -p $SECRETS \
   -n $SCRIPT_PATH/diego-jobs.yml \
-  -x > $SCRIPT_PATH/$DIEGO_MANIFEST
+  -x > $DIEGO_MANIFEST
