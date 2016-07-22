@@ -1,5 +1,8 @@
-meta:
-  common_templates:
+<<: (( merge ))
+
+jobs:
+- name: database_z1
+  templates:
   - name: nessus-agent
     release: nessus-agent
   - name: harden
@@ -10,26 +13,207 @@ meta:
     release: tripwire
   - name: awslogs
     release: awslogs
-
-#base_job_templates: (( merge ))
-#  access:
-#  <<: (( merge ))
-#    (( meta.common_templates ))
-#  brain:
-#  <<: (( merge ))
-#    (( meta.common_templates ))
-#  cc_bridge:
-#  <<: (( merge ))
-#    (( meta.common_templates ))
-#  cell:
-#  <<: (( merge ))
-#    (( meta.common_templates ))
-#  database:
-#  <<: (( merge ))
-#    (( meta.common_templates ))
-#  route_emitter:
-#  <<: (( merge ))
-#    (( meta.common_templates ))
-#  colocated:
-#  <<: (( merge ))
-#    (( meta.common_templates ))
+- name: database_z2
+  templates:
+  - name: nessus-agent
+    release: nessus-agent
+  - name: harden
+    release: fisma
+  - name: collectd
+    release: collectd
+  - name: tripwire
+    release: tripwire
+  - name: awslogs
+    release: awslogs
+- name: database_z3
+  templates:
+  - name: nessus-agent
+    release: nessus-agent
+  - name: harden
+    release: fisma
+  - name: collectd
+    release: collectd
+  - name: tripwire
+    release: tripwire
+  - name: awslogs
+    release: awslogs
+- name: brain_z1
+  templates:
+  - name: nessus-agent
+    release: nessus-agent
+  - name: harden
+    release: fisma
+  - name: collectd
+    release: collectd
+  - name: tripwire
+    release: tripwire
+  - name: awslogs
+    release: awslogs
+- name: brain_z2
+  templates:
+  - name: nessus-agent
+    release: nessus-agent
+  - name: harden
+    release: fisma
+  - name: collectd
+    release: collectd
+  - name: tripwire
+    release: tripwire
+  - name: awslogs
+    release: awslogs
+- name: brain_z3
+  templates:
+  - name: nessus-agent
+    release: nessus-agent
+  - name: harden
+    release: fisma
+  - name: collectd
+    release: collectd
+  - name: tripwire
+    release: tripwire
+  - name: awslogs
+    release: awslogs
+- name: cell_z1
+  templates:
+  - name: nessus-agent
+    release: nessus-agent
+  - name: harden
+    release: fisma
+  - name: collectd
+    release: collectd
+  - name: tripwire
+    release: tripwire
+  - name: awslogs
+    release: awslogs
+- name: cell_z2
+  templates:
+  - name: nessus-agent
+    release: nessus-agent
+  - name: harden
+    release: fisma
+  - name: collectd
+    release: collectd
+  - name: tripwire
+    release: tripwire
+  - name: awslogs
+    release: awslogs
+- name: cell_z3
+  templates:
+  - name: nessus-agent
+    release: nessus-agent
+  - name: harden
+    release: fisma
+  - name: collectd
+    release: collectd
+  - name: tripwire
+    release: tripwire
+  - name: awslogs
+    release: awslogs
+- name: cc_bridge_z1
+  templates:
+  - name: nessus-agent
+    release: nessus-agent
+  - name: harden
+    release: fisma
+  - name: collectd
+    release: collectd
+  - name: tripwire
+    release: tripwire
+  - name: awslogs
+    release: awslogs
+- name: cc_bridge_z2
+  templates:
+  - name: nessus-agent
+    release: nessus-agent
+  - name: harden
+    release: fisma
+  - name: collectd
+    release: collectd
+  - name: tripwire
+    release: tripwire
+  - name: awslogs
+    release: awslogs
+- name: cc_bridge_z3
+  templates:
+  - name: nessus-agent
+    release: nessus-agent
+  - name: harden
+    release: fisma
+  - name: collectd
+    release: collectd
+  - name: tripwire
+    release: tripwire
+  - name: awslogs
+    release: awslogs
+- name: route_emitter_z1
+  templates:
+  - name: nessus-agent
+    release: nessus-agent
+  - name: harden
+    release: fisma
+  - name: collectd
+    release: collectd
+  - name: tripwire
+    release: tripwire
+  - name: awslogs
+    release: awslogs
+- name: route_emitter_z2
+  templates:
+  - name: nessus-agent
+    release: nessus-agent
+  - name: harden
+    release: fisma
+  - name: collectd
+    release: collectd
+  - name: tripwire
+    release: tripwire
+  - name: awslogs
+    release: awslogs
+- name: route_emitter_z3
+  templates:
+  - name: nessus-agent
+    release: nessus-agent
+  - name: harden
+    release: fisma
+  - name: collectd
+    release: collectd
+  - name: tripwire
+    release: tripwire
+  - name: awslogs
+    release: awslogs
+- name: access_z1
+  templates:
+  - name: nessus-agent
+    release: nessus-agent
+  - name: harden
+    release: fisma
+  - name: collectd
+    release: collectd
+  - name: tripwire
+    release: tripwire
+  - name: awslogs
+    release: awslogs
+- name: access_z2
+  templates:
+  - name: nessus-agent
+    release: nessus-agent
+  - name: harden
+    release: fisma
+  - name: collectd
+    release: collectd
+  - name: tripwire
+    release: tripwire
+  - name: awslogs
+    release: awslogs
+- name: access_z3
+  templates:
+  - name: nessus-agent
+    release: nessus-agent
+  - name: harden
+    release: fisma
+  - name: collectd
+    release: collectd
+  - name: tripwire
+    release: tripwire
+  - name: awslogs
+    release: awslogs

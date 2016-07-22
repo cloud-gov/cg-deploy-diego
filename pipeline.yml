@@ -1,17 +1,17 @@
 groups: []
-#- name: all
-#  jobs:
-#  - deploy-diego-staging
-#  - smoke-tests-staging
-#  - acceptance-tests-staging
+- name: all
+  jobs:
+  - deploy-diego-staging
+  - smoke-tests-staging
+  - acceptance-tests-staging
 #  - deploy-diego-prod
 #  - smoke-tests-prod
 #  - acceptance-tests-prod
-#- name: staging
-#  jobs:
-#  - deploy-diego-staging
-#  - smoke-tests-staging
-#  - acceptance-tests-staging
+- name: staging
+  jobs:
+  - deploy-diego-staging
+  - smoke-tests-staging
+  - acceptance-tests-staging
 #- name: production
 #  jobs:
 #  - deploy-diego-prod
@@ -112,7 +112,7 @@ resources:
   type: s3
   source:
     access_key_id: {{ci-access-key-id}}
-    bucket: {{diego-private-stage-bucket}}
+    bucket: {{diego-private-staging-bucket}}
     private: true
     region_name: {{aws-region}}
     secret_access_key: {{ci-secret-access-key}}
@@ -180,7 +180,7 @@ resources:
 #    regexp: awslogs-(.*).tgz
 #    secret_access_key: {{s3-bosh-releases-secret-access-key}}
 #    region_name: {{aws-region}}
-- name: deploy-diego-deployment-staging
+- name: deploy-diego-staging
   type: 18f-bosh-deployment
   source:
     target: {{diego-deployment-staging-bosh-target}}
@@ -188,7 +188,7 @@ resources:
     password: {{diego-deployment-staging-bosh-password}}
     deployment: {{diego-deployment-staging-bosh-deployment}}
     ignore_ssl: true
-- name: deploy-diego-deployment-prod
+- name: deploy-diego-prod
   type: 18f-bosh-deployment
   source:
     target: {{diego-deployment-prod-bosh-target}}
@@ -251,11 +251,33 @@ jobs:
       trigger: true
     - get: garden-linux-release
       trigger: true
+    - get: stagingbosh-certificate
+      trigger: true
   - aggregate:
     - task: upload-cflinuxfs2-rootfs-release
       file: pipeline-tasks/upload-release.yml
       input_mapping:
         release: cflinuxfs2-rootfs-release
+        certificate: stagingbosh-certificate
+      params:
+        BOSH_USERNAME: {{diego-deployment-staging-bosh-username}}
+        BOSH_PASSWORD: {{diego-deployment-staging-bosh-password}}
+        BOSH_TARGET: {{diego-deployment-staging-bosh-target}}
+        BOSH_CERT: bosh.pem
+    - task: upload-etcd-release
+      file: pipeline-tasks/upload-release.yml
+      input_mapping:
+        release: etcd-release
+        certificate: stagingbosh-certificate
+      params:
+        BOSH_USERNAME: {{diego-deployment-staging-bosh-username}}
+        BOSH_PASSWORD: {{diego-deployment-staging-bosh-password}}
+        BOSH_TARGET: {{diego-deployment-staging-bosh-target}}
+        BOSH_CERT: bosh.pem
+    - task: upload-garden-linux-release
+      file: pipeline-tasks/upload-release.yml
+      input_mapping:
+        release: garden-linux-release
         certificate: stagingbosh-certificate
       params:
         BOSH_USERNAME: {{diego-deployment-staging-bosh-username}}
@@ -285,7 +307,7 @@ jobs:
           - generate-diego-stage-manifest/diego-staging-manifest.yml
         outputs:
         - name: generate-diego-stage-manifest
-  - put: deploy-diego-deployment-staging
+  - put: deploy-diego-staging
     params:
       cert: {{diego-deployment-staging-bosh-cacert}}
       manifest: generate-diego-stage-manifest/diego-staging-manifest.yml
@@ -294,6 +316,7 @@ jobs:
       releases:
 # XXX Add rootfs, garden, etc here?
         - diego-release/*.tgz
+#        - cflinuxfs2-rootfs-release-release/*.tgz
 #        - cg-s3-nessus-agent-release/*.tgz
 #        - cg-s3-fisma-release/*.tgz
 #        - cg-s3-newrelic-release/*.tgz

@@ -24,5 +24,7 @@ diego-release-repo/scripts/generate-deployment-manifest \
   -c $SCRIPT_PATH/${CF_DEPLOYMENT}.yml \
   -i $SECRETS \
   -p $SECRETS \
-  -n $SCRIPT_PATH/diego-jobs.yml \
-  -x > $DIEGO_MANIFEST
+  -n $SCRIPT_PATH/instance-count-overrides.yml \
+  -x > $SCRIPT_PATH/diego-intermediate.yml
+
+spiff merge $SCRIPT_PATH/diego-jobs.yml $SCRIPT_PATH/diego-intermediate.yml > {DIEGO_MANIFEST}
