@@ -1,5 +1,8 @@
 <<: (( merge ))
 
+properties:
+  <<: (( merge ))
+
 releases:
   - <<: (( merge ))
   - name: fisma
