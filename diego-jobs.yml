@@ -1,6 +1,7 @@
 <<: (( merge ))
 
 releases:
+  - <<: (( merge ))
   - name: fisma
     version: latest
   - name: newrelic
