@@ -117,42 +117,42 @@ resources:
     region_name: {{aws-region}}
     secret_access_key: {{ci-secret-access-key}}
     versioned_file: bosh.pem
-#- name: cg-s3-nessus-agent-release
-#  type: s3
-#  source:
-#    access_key_id: {{s3-bosh-releases-access-key-id}}
-#    bucket: {{s3-bosh-releases-bucket}}
-#    private: true
-#    regexp: nessus-agent-(.*).tgz
-#    secret_access_key: {{s3-bosh-releases-secret-access-key}}
-#    region_name: {{aws-region}}
-#- name: cg-s3-fisma-release
-#  type: s3
-#  source:
-#    access_key_id: {{s3-bosh-releases-access-key-id}}
-#    bucket: {{s3-bosh-releases-bucket}}
-#    private: true
-#    regexp: fisma-(.*).tgz
-#    secret_access_key: {{s3-bosh-releases-secret-access-key}}
-#    region_name: {{aws-region}}
-#- name: cg-s3-newrelic-release
-#  type: s3
-#  source:
-#    access_key_id: {{s3-bosh-releases-access-key-id}}
-#    bucket: {{s3-bosh-releases-bucket}}
-#    private: true
-#    regexp: newrelic-(.*).tgz
-#    secret_access_key: {{s3-bosh-releases-secret-access-key}}
-#    region_name: {{aws-region}}
-#- name: cg-s3-collectd-release
-#  type: s3
-#  source:
-#    access_key_id: {{s3-bosh-releases-access-key-id}}
-#    bucket: {{s3-bosh-releases-bucket}}
-#    private: true
-#    regexp: collectd-(.*).tgz
-#    secret_access_key: {{s3-bosh-releases-secret-access-key}}
-#    region_name: {{aws-region}}
+- name: cg-s3-nessus-agent-release
+  type: s3
+  source:
+    access_key_id: {{s3-bosh-releases-access-key-id}}
+    bucket: {{s3-bosh-releases-bucket}}
+    private: true
+    regexp: nessus-agent-(.*).tgz
+    secret_access_key: {{s3-bosh-releases-secret-access-key}}
+    region_name: {{aws-region}}
+- name: cg-s3-fisma-release
+  type: s3
+  source:
+    access_key_id: {{s3-bosh-releases-access-key-id}}
+    bucket: {{s3-bosh-releases-bucket}}
+    private: true
+    regexp: fisma-(.*).tgz
+    secret_access_key: {{s3-bosh-releases-secret-access-key}}
+    region_name: {{aws-region}}
+- name: cg-s3-newrelic-release
+  type: s3
+  source:
+    access_key_id: {{s3-bosh-releases-access-key-id}}
+    bucket: {{s3-bosh-releases-bucket}}
+    private: true
+    regexp: newrelic-(.*).tgz
+    secret_access_key: {{s3-bosh-releases-secret-access-key}}
+    region_name: {{aws-region}}
+- name: cg-s3-collectd-release
+  type: s3
+  source:
+    access_key_id: {{s3-bosh-releases-access-key-id}}
+    bucket: {{s3-bosh-releases-bucket}}
+    private: true
+    regexp: collectd-(.*).tgz
+    secret_access_key: {{s3-bosh-releases-secret-access-key}}
+    region_name: {{aws-region}}
 ##- name: cg-s3-18f-diego-release
 ##  type: s3
 ##  source:
@@ -162,24 +162,24 @@ resources:
 ##    regexp: 18f-diego-(.*).tgz
 ##    secret_access_key: {{s3-bosh-releases-secret-access-key}}
 ##    region_name: {{aws-region}}
-#- name: cg-s3-tripwire-release
-#  type: s3
-#  source:
-#    access_key_id: {{s3-bosh-releases-access-key-id}}
-#    bucket: {{s3-bosh-releases-bucket}}
-#    private: true
-#    regexp: tripwire-(.*).tgz
-#    secret_access_key: {{s3-bosh-releases-secret-access-key}}
-#    region_name: {{aws-region}}
-#- name: cg-s3-awslogs-release
-#  type: s3
-#  source:
-#    access_key_id: {{s3-bosh-releases-access-key-id}}
-#    bucket: {{s3-bosh-releases-bucket}}
-#    private: true
-#    regexp: awslogs-(.*).tgz
-#    secret_access_key: {{s3-bosh-releases-secret-access-key}}
-#    region_name: {{aws-region}}
+- name: cg-s3-tripwire-release
+  type: s3
+  source:
+    access_key_id: {{s3-bosh-releases-access-key-id}}
+    bucket: {{s3-bosh-releases-bucket}}
+    private: true
+    regexp: tripwire-(.*).tgz
+    secret_access_key: {{s3-bosh-releases-secret-access-key}}
+    region_name: {{aws-region}}
+- name: cg-s3-awslogs-release
+  type: s3
+  source:
+    access_key_id: {{s3-bosh-releases-access-key-id}}
+    bucket: {{s3-bosh-releases-bucket}}
+    private: true
+    regexp: awslogs-(.*).tgz
+    secret_access_key: {{s3-bosh-releases-secret-access-key}}
+    region_name: {{aws-region}}
 - name: deploy-diego-staging
   type: 18f-bosh-deployment
   source:
@@ -227,22 +227,22 @@ jobs:
       trigger: true
     - get: diego-stemcell
       trigger: false
-#    - get: cg-s3-nessus-agent-release
-#      trigger: true
-#    - get: cg-s3-fisma-release
-#      trigger: true
-#    - get: cg-s3-newrelic-release
-#      trigger: true
-#    - get: cg-s3-collectd-release
-#      trigger: true
+    - get: cg-s3-nessus-agent-release
+      trigger: true
+    - get: cg-s3-fisma-release
+      trigger: true
+    - get: cg-s3-newrelic-release
+      trigger: true
+    - get: cg-s3-collectd-release
+      trigger: true
 ##    - get: cg-s3-18f-diego-release
 ##      trigger: true
 #    - get: cg-s3-secureproxy-release
 #      trigger: true
-#    - get: cg-s3-tripwire-release
-#      trigger: true
-#    - get: cg-s3-awslogs-release
-#      trigger: true
+    - get: cg-s3-tripwire-release
+      trigger: true
+    - get: cg-s3-awslogs-release
+      trigger: true
     - get: diego-release
       trigger: true
     - get: cflinuxfs2-rootfs-release

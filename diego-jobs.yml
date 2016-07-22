@@ -4,6 +4,8 @@ jobs:
 - name: database_z1
   templates:
   - <<: (( merge ))
+  - name: newrelic-monitor
+    release: newrelic
   - name: nessus-agent
     release: nessus-agent
   - name: harden
@@ -14,9 +16,17 @@ jobs:
     release: tripwire
   - name: awslogs
     release: awslogs
+  - name: riemannc
+    release: riemannc
+  - name: clamav
+    release: clamav
+  - name: snort
+    release: snort
 - name: database_z2
   templates:
   - <<: (( merge ))
+  - name: newrelic-monitor
+    release: newrelic
   - name: nessus-agent
     release: nessus-agent
   - name: harden
@@ -27,22 +37,17 @@ jobs:
     release: tripwire
   - name: awslogs
     release: awslogs
-- name: database_z3
-  templates:
-  - <<: (( merge ))
-  - name: nessus-agent
-    release: nessus-agent
-  - name: harden
-    release: fisma
-  - name: collectd
-    release: collectd
-  - name: tripwire
-    release: tripwire
-  - name: awslogs
-    release: awslogs
+  - name: riemannc
+    release: riemannc
+  - name: clamav
+    release: clamav
+  - name: snort
+    release: snort
 - name: brain_z1
   templates:
   - <<: (( merge ))
+  - name: newrelic-monitor
+    release: newrelic
   - name: nessus-agent
     release: nessus-agent
   - name: harden
@@ -53,9 +58,17 @@ jobs:
     release: tripwire
   - name: awslogs
     release: awslogs
+  - name: riemannc
+    release: riemannc
+  - name: clamav
+    release: clamav
+  - name: snort
+    release: snort
 - name: brain_z2
   templates:
   - <<: (( merge ))
+  - name: newrelic-monitor
+    release: newrelic
   - name: nessus-agent
     release: nessus-agent
   - name: harden
@@ -66,22 +79,17 @@ jobs:
     release: tripwire
   - name: awslogs
     release: awslogs
-- name: brain_z3
-  templates:
-  - <<: (( merge ))
-  - name: nessus-agent
-    release: nessus-agent
-  - name: harden
-    release: fisma
-  - name: collectd
-    release: collectd
-  - name: tripwire
-    release: tripwire
-  - name: awslogs
-    release: awslogs
+  - name: riemannc
+    release: riemannc
+  - name: clamav
+    release: clamav
+  - name: snort
+    release: snort
 - name: cell_z1
   templates:
   - <<: (( merge ))
+  - name: newrelic-monitor
+    release: newrelic
   - name: nessus-agent
     release: nessus-agent
   - name: harden
@@ -92,9 +100,17 @@ jobs:
     release: tripwire
   - name: awslogs
     release: awslogs
+  - name: riemannc
+    release: riemannc
+  - name: clamav
+    release: clamav
+  - name: snort
+    release: snort
 - name: cell_z2
   templates:
   - <<: (( merge ))
+  - name: newrelic-monitor
+    release: newrelic
   - name: nessus-agent
     release: nessus-agent
   - name: harden
@@ -105,22 +121,17 @@ jobs:
     release: tripwire
   - name: awslogs
     release: awslogs
-- name: cell_z3
-  templates:
-  - <<: (( merge ))
-  - name: nessus-agent
-    release: nessus-agent
-  - name: harden
-    release: fisma
-  - name: collectd
-    release: collectd
-  - name: tripwire
-    release: tripwire
-  - name: awslogs
-    release: awslogs
+  - name: riemannc
+    release: riemannc
+  - name: clamav
+    release: clamav
+  - name: snort
+    release: snort
 - name: cc_bridge_z1
   templates:
   - <<: (( merge ))
+  - name: newrelic-monitor
+    release: newrelic
   - name: nessus-agent
     release: nessus-agent
   - name: harden
@@ -131,9 +142,17 @@ jobs:
     release: tripwire
   - name: awslogs
     release: awslogs
+  - name: riemannc
+    release: riemannc
+  - name: clamav
+    release: clamav
+  - name: snort
+    release: snort
 - name: cc_bridge_z2
   templates:
   - <<: (( merge ))
+  - name: newrelic-monitor
+    release: newrelic
   - name: nessus-agent
     release: nessus-agent
   - name: harden
@@ -144,22 +163,17 @@ jobs:
     release: tripwire
   - name: awslogs
     release: awslogs
-- name: cc_bridge_z3
-  templates:
-  - <<: (( merge ))
-  - name: nessus-agent
-    release: nessus-agent
-  - name: harden
-    release: fisma
-  - name: collectd
-    release: collectd
-  - name: tripwire
-    release: tripwire
-  - name: awslogs
-    release: awslogs
+  - name: riemannc
+    release: riemannc
+  - name: clamav
+    release: clamav
+  - name: snort
+    release: snort
 - name: route_emitter_z1
   templates:
   - <<: (( merge ))
+  - name: newrelic-monitor
+    release: newrelic
   - name: nessus-agent
     release: nessus-agent
   - name: harden
@@ -170,9 +184,17 @@ jobs:
     release: tripwire
   - name: awslogs
     release: awslogs
+  - name: riemannc
+    release: riemannc
+  - name: clamav
+    release: clamav
+  - name: snort
+    release: snort
 - name: route_emitter_z2
   templates:
   - <<: (( merge ))
+  - name: newrelic-monitor
+    release: newrelic
   - name: nessus-agent
     release: nessus-agent
   - name: harden
@@ -183,22 +205,17 @@ jobs:
     release: tripwire
   - name: awslogs
     release: awslogs
-- name: route_emitter_z3
-  templates:
-  - <<: (( merge ))
-  - name: nessus-agent
-    release: nessus-agent
-  - name: harden
-    release: fisma
-  - name: collectd
-    release: collectd
-  - name: tripwire
-    release: tripwire
-  - name: awslogs
-    release: awslogs
+  - name: riemannc
+    release: riemannc
+  - name: clamav
+    release: clamav
+  - name: snort
+    release: snort
 - name: access_z1
   templates:
   - <<: (( merge ))
+  - name: newrelic-monitor
+    release: newrelic
   - name: nessus-agent
     release: nessus-agent
   - name: harden
@@ -209,9 +226,17 @@ jobs:
     release: tripwire
   - name: awslogs
     release: awslogs
+  - name: riemannc
+    release: riemannc
+  - name: clamav
+    release: clamav
+  - name: snort
+    release: snort
 - name: access_z2
   templates:
   - <<: (( merge ))
+  - name: newrelic-monitor
+    release: newrelic
   - name: nessus-agent
     release: nessus-agent
   - name: harden
@@ -222,16 +247,9 @@ jobs:
     release: tripwire
   - name: awslogs
     release: awslogs
-- name: access_z3
-  templates:
-  - <<: (( merge ))
-  - name: nessus-agent
-    release: nessus-agent
-  - name: harden
-    release: fisma
-  - name: collectd
-    release: collectd
-  - name: tripwire
-    release: tripwire
-  - name: awslogs
-    release: awslogs
+  - name: riemannc
+    release: riemannc
+  - name: clamav
+    release: clamav
+  - name: snort
+    release: snort
