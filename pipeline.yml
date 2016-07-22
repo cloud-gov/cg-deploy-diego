@@ -317,14 +317,14 @@ jobs:
 # XXX Add rootfs, garden, etc here?
         - diego-release/*.tgz
 #        - cflinuxfs2-rootfs-release-release/*.tgz
-#        - cg-s3-nessus-agent-release/*.tgz
-#        - cg-s3-fisma-release/*.tgz
-#        - cg-s3-newrelic-release/*.tgz
-#        - cg-s3-collectd-release/*.tgz
+        - cg-s3-nessus-agent-release/*.tgz
+        - cg-s3-fisma-release/*.tgz
+        - cg-s3-newrelic-release/*.tgz
+        - cg-s3-collectd-release/*.tgz
 ##        - cg-s3-18f-diego-release/*.tgz
 #        - cg-s3-secureproxy-release/*.tgz
-#        - cg-s3-tripwire-release/*.tgz
-#        - cg-s3-awslogs-release/*.tgz
+        - cg-s3-tripwire-release/*.tgz
+        - cg-s3-awslogs-release/*.tgz
 #    on_success:
 #      put: slack
 #      params:
