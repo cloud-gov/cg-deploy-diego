@@ -1,5 +1,23 @@
 <<: (( merge ))
 
+releases:
+  - name: fisma
+    version: latest
+  - name: newrelic
+    version: latest
+  - name: collectd
+    version: latest
+  - name: tripwire
+    version: latest
+  - name: awslogs
+    version: latest
+  - name: nessus-agent
+    version: latest
+  - name: riemannc
+    version: latest
+  - name: clamav
+    version: latest
+
 jobs:
 - name: database_z1
   templates:
