@@ -22,7 +22,9 @@ releases:
     version: latest
 
 jobs:
+<<: (( merge ))
 - name: database_z1
+  <<: (( merge ))
   templates:
   - <<: (( merge ))
   - name: newrelic-monitor
@@ -44,6 +46,7 @@ jobs:
   - name: snort
     release: snort
 - name: database_z2
+  <<: (( merge ))
   templates:
   - <<: (( merge ))
   - name: newrelic-monitor
@@ -65,6 +68,7 @@ jobs:
   - name: snort
     release: snort
 - name: brain_z1
+  <<: (( merge ))
   templates:
   - <<: (( merge ))
   - name: newrelic-monitor
@@ -86,6 +90,7 @@ jobs:
   - name: snort
     release: snort
 - name: brain_z2
+  <<: (( merge ))
   templates:
   - <<: (( merge ))
   - name: newrelic-monitor
@@ -107,6 +112,7 @@ jobs:
   - name: snort
     release: snort
 - name: cell_z1
+  <<: (( merge ))
   templates:
   - <<: (( merge ))
   - name: newrelic-monitor
@@ -128,6 +134,7 @@ jobs:
   - name: snort
     release: snort
 - name: cell_z2
+  <<: (( merge ))
   templates:
   - <<: (( merge ))
   - name: newrelic-monitor
@@ -149,6 +156,7 @@ jobs:
   - name: snort
     release: snort
 - name: cc_bridge_z1
+  <<: (( merge ))
   templates:
   - <<: (( merge ))
   - name: newrelic-monitor
@@ -170,6 +178,7 @@ jobs:
   - name: snort
     release: snort
 - name: cc_bridge_z2
+  <<: (( merge ))
   templates:
   - <<: (( merge ))
   - name: newrelic-monitor
@@ -191,6 +200,7 @@ jobs:
   - name: snort
     release: snort
 - name: route_emitter_z1
+  <<: (( merge ))
   templates:
   - <<: (( merge ))
   - name: newrelic-monitor
@@ -212,6 +222,7 @@ jobs:
   - name: snort
     release: snort
 - name: route_emitter_z2
+  <<: (( merge ))
   templates:
   - <<: (( merge ))
   - name: newrelic-monitor
@@ -233,6 +244,7 @@ jobs:
   - name: snort
     release: snort
 - name: access_z1
+  <<: (( merge ))
   templates:
   - <<: (( merge ))
   - name: newrelic-monitor
@@ -254,6 +266,7 @@ jobs:
   - name: snort
     release: snort
 - name: access_z2
+  <<: (( merge ))
   templates:
   - <<: (( merge ))
   - name: newrelic-monitor
