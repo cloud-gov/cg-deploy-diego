@@ -22,7 +22,7 @@ releases:
     version: latest
 
 jobs:
-<<: (( merge ))
+- <<: (( merge ))
 - name: database_z1
   <<: (( merge ))
   templates:
