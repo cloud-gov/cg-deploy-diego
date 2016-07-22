@@ -3,6 +3,7 @@
 jobs:
 - name: database_z1
   templates:
+  - <<: (( merge ))
   - name: nessus-agent
     release: nessus-agent
   - name: harden
@@ -15,6 +16,7 @@ jobs:
     release: awslogs
 - name: database_z2
   templates:
+  - <<: (( merge ))
   - name: nessus-agent
     release: nessus-agent
   - name: harden
@@ -27,6 +29,7 @@ jobs:
     release: awslogs
 - name: database_z3
   templates:
+  - <<: (( merge ))
   - name: nessus-agent
     release: nessus-agent
   - name: harden
@@ -39,6 +42,7 @@ jobs:
     release: awslogs
 - name: brain_z1
   templates:
+  - <<: (( merge ))
   - name: nessus-agent
     release: nessus-agent
   - name: harden
@@ -51,6 +55,7 @@ jobs:
     release: awslogs
 - name: brain_z2
   templates:
+  - <<: (( merge ))
   - name: nessus-agent
     release: nessus-agent
   - name: harden
@@ -63,6 +68,7 @@ jobs:
     release: awslogs
 - name: brain_z3
   templates:
+  - <<: (( merge ))
   - name: nessus-agent
     release: nessus-agent
   - name: harden
@@ -75,6 +81,7 @@ jobs:
     release: awslogs
 - name: cell_z1
   templates:
+  - <<: (( merge ))
   - name: nessus-agent
     release: nessus-agent
   - name: harden
@@ -87,6 +94,7 @@ jobs:
     release: awslogs
 - name: cell_z2
   templates:
+  - <<: (( merge ))
   - name: nessus-agent
     release: nessus-agent
   - name: harden
@@ -99,6 +107,7 @@ jobs:
     release: awslogs
 - name: cell_z3
   templates:
+  - <<: (( merge ))
   - name: nessus-agent
     release: nessus-agent
   - name: harden
@@ -111,6 +120,7 @@ jobs:
     release: awslogs
 - name: cc_bridge_z1
   templates:
+  - <<: (( merge ))
   - name: nessus-agent
     release: nessus-agent
   - name: harden
@@ -123,6 +133,7 @@ jobs:
     release: awslogs
 - name: cc_bridge_z2
   templates:
+  - <<: (( merge ))
   - name: nessus-agent
     release: nessus-agent
   - name: harden
@@ -135,6 +146,7 @@ jobs:
     release: awslogs
 - name: cc_bridge_z3
   templates:
+  - <<: (( merge ))
   - name: nessus-agent
     release: nessus-agent
   - name: harden
@@ -147,6 +159,7 @@ jobs:
     release: awslogs
 - name: route_emitter_z1
   templates:
+  - <<: (( merge ))
   - name: nessus-agent
     release: nessus-agent
   - name: harden
@@ -159,6 +172,7 @@ jobs:
     release: awslogs
 - name: route_emitter_z2
   templates:
+  - <<: (( merge ))
   - name: nessus-agent
     release: nessus-agent
   - name: harden
@@ -171,6 +185,7 @@ jobs:
     release: awslogs
 - name: route_emitter_z3
   templates:
+  - <<: (( merge ))
   - name: nessus-agent
     release: nessus-agent
   - name: harden
@@ -183,6 +198,7 @@ jobs:
     release: awslogs
 - name: access_z1
   templates:
+  - <<: (( merge ))
   - name: nessus-agent
     release: nessus-agent
   - name: harden
@@ -195,6 +211,7 @@ jobs:
     release: awslogs
 - name: access_z2
   templates:
+  - <<: (( merge ))
   - name: nessus-agent
     release: nessus-agent
   - name: harden
@@ -207,6 +224,7 @@ jobs:
     release: awslogs
 - name: access_z3
   templates:
+  - <<: (( merge ))
   - name: nessus-agent
     release: nessus-agent
   - name: harden

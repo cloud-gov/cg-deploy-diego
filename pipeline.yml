@@ -1,17 +1,17 @@
 groups: []
-- name: all
-  jobs:
-  - deploy-diego-staging
-  - smoke-tests-staging
-  - acceptance-tests-staging
+#- name: all
+#  jobs:
+#  - deploy-diego-staging
+#  - smoke-tests-staging
+#  - acceptance-tests-staging
 #  - deploy-diego-prod
 #  - smoke-tests-prod
 #  - acceptance-tests-prod
-- name: staging
-  jobs:
-  - deploy-diego-staging
-  - smoke-tests-staging
-  - acceptance-tests-staging
+#- name: staging
+#  jobs:
+#  - deploy-diego-staging
+#  - smoke-tests-staging
+#  - acceptance-tests-staging
 #- name: production
 #  jobs:
 #  - deploy-diego-prod
