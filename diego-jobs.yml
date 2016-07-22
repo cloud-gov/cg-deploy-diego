@@ -18,6 +18,8 @@ releases:
     version: latest
   - name: clamav
     version: latest
+  - name: snort
+    version: latest
 
 jobs:
 - name: database_z1
