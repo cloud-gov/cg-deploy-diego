@@ -27,4 +27,8 @@ diego-release-repo/scripts/generate-deployment-manifest \
   -n $SCRIPT_PATH/instance-count-overrides.yml \
   -x > $SCRIPT_PATH/diego-intermediate.yml
 
-spiff merge $SECRETS $SCRIPT_PATH/diego-jobs.yml $SCRIPT_PATH/diego-intermediate.yml > ${DIEGO_MANIFEST}
+spiff merge \
+  diego-release-repo/manifest-generation/misc-templates/bosh.yml \
+  $SECRETS \
+  $SCRIPT_PATH/diego-jobs.yml \
+  $SCRIPT_PATH/diego-intermediate.yml > ${DIEGO_MANIFEST}
