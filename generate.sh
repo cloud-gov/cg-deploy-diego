@@ -8,7 +8,8 @@ BOSH_CACERT=$3
 BOSH_TARGET=$4
 BOSH_USERNAME=$5
 BOSH_PASSWORD=$6
-DIEGO_MANIFEST=$7
+INSTANCE_COUNT_OVERRIDES=$7
+DIEGO_MANIFEST=$8
 
 SCRIPT_PATH=$(dirname $0)
 SECRETS_PATH=$(dirname $SECRETS)
@@ -27,7 +28,7 @@ diego-release-repo/scripts/generate-deployment-manifest \
   -c $SCRIPT_PATH/${CF_DEPLOYMENT}.yml \
   -i $SECRETS \
   -p $SECRETS \
-  -n $SCRIPT_PATH/instance-count-overrides.yml \
+  -n $SCRIPT_PATH/$INSTANCE_COUNT_OVERRIDES \
   -x > $SCRIPT_PATH/diego-intermediate.yml
 
 # Merge in our local additions
