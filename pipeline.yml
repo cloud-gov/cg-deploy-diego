@@ -1,132 +1,9 @@
 groups: []
-#- name: all
-#  jobs:
-#  - deploy-diego-staging
-#  - smoke-tests-staging
-#  - acceptance-tests-staging
-#  - deploy-diego-prod
-#  - smoke-tests-prod
-#  - acceptance-tests-prod
-#- name: staging
-#  jobs:
-#  - deploy-diego-staging
-#  - smoke-tests-staging
-#  - acceptance-tests-staging
-#- name: production
-#  jobs:
-#  - deploy-diego-prod
-#  - smoke-tests-prod
-#  - acceptance-tests-prod
 resources:
-- name: pipeline-tasks
-  type: git
-  source:
-    uri: {{pipeline-tasks-git-url}}
-    branch: {{pipeline-tasks-git-branch}}
-#- name: slack
-#  type: slack-notification
-#  source:
-#    url: {{slack-webhook-url}}
-#- name: cf-manifests-staging
-#  type: git
-#  source:
-#    uri: {{cf-manifests-git-url}}
-#    branch: {{cf-manifests-git-branch-staging}}
-#    paths:
-#    - cf-*.yml
-#- name: cf-manifests-prod
-#  type: git
-#  source:
-#    uri: {{cf-manifests-git-url}}
-#    branch: {{cf-manifests-git-branch-prod}}
-#    paths:
-#    - cf-*.yml
-- name: diego-release-repo
-  type: git
-  source:
-    uri: {{diego-release-repo-git-url}}
-    # master
-    branch: {{diego-release-repo-git-branch-staging}}
-    paths:
-    - releases/diego-*.yml
-- name: diego-manifests-staging
-  type: git
-  source:
-    uri: {{diego-manifests-git-url}}
-    branch: {{diego-manifests-git-branch-staging}}
-    paths:
-    - diego-*.yml
-    - generate*
-- name: diego-manifests-prod
-  type: git
-  source:
-    uri: {{diego-manifests-git-url}}
-    branch: {{diego-manifests-git-branch-prod}}
-    paths:
-    - diego-*.yml
-    - generate*
-- name: common-staging
-  type: cg-common
-  source:
-    access_key_id: {{ci-access-key-id}}
-    bosh_cert: bosh.pem
-    bucket_name: {{diego-private-staging-bucket}}
-    secret_access_key: {{ci-secret-access-key}}
-    secrets_file: diego-staging.yml
-    secrets_passphrase: {{diego-private-staging-passphrase}}
-    region: {{aws-region}}
-- name: common-prod
-  type: cg-common
-  source:
-    bucket_name: {{diego-private-prod-bucket}}
-    access_key_id: {{ci-access-key-id}}
-    secret_access_key: {{ci-secret-access-key}}
-    secrets_file: diego.yml
-    secrets_passphrase: {{diego-private-prod-passphrase}}
-    bosh_cert: bosh.pem
-    region: {{aws-region}}
-- name: diego-stemcell
-  type: s3
-  source:
-    access_key_id: {{ci-access-key-id}}
-    bucket: {{stemcell-bucket}}
-    regexp: light-bosh-stemcell-(.*)-aws-xen-hvm-ubuntu-trusty-go_agent.tgz
-    region_name: {{aws-region}}
-    secret_access_key: {{ci-secret-access-key}}
-- name: diego-release
-  type: bosh-io-release
-  source:
-    repository: cloudfoundry-incubator/diego-release
-- name: etcd-release
-  type: bosh-io-release
-  source:
-    repository: cloudfoundry-incubator/etcd-release
-- name: garden-linux-release
-  type: bosh-io-release
-  source:
-    repository: cloudfoundry-incubator/garden-linux-release
 - name: cflinuxfs2-rootfs-release
   type: bosh-io-release
   source:
     repository: cloudfoundry/cflinuxfs2-rootfs-release
-- name: stagingbosh-certificate
-  type: s3
-  source:
-    access_key_id: {{ci-access-key-id}}
-    bucket: {{diego-private-staging-bucket}}
-    private: true
-    region_name: {{aws-region}}
-    secret_access_key: {{ci-secret-access-key}}
-    versioned_file: bosh.pem
-- name: prodbosh-certificate
-  type: s3
-  source:
-    access_key_id: {{ci-access-key-id}}
-    bucket: {{diego-private-prod-bucket}}
-    private: true
-    region_name: {{aws-region}}
-    secret_access_key: {{ci-secret-access-key}}
-    versioned_file: bosh.pem
 - name: cg-s3-nessus-agent-release
   type: s3
   source:
@@ -181,14 +58,26 @@ resources:
     regexp: awslogs-(.*).tgz
     secret_access_key: {{s3-bosh-releases-secret-access-key}}
     region_name: {{aws-region}}
-- name: diego-staging-deployment
-  type: 18f-bosh-deployment
+- name: common-staging
+  type: cg-common
   source:
-    target: {{diego-deployment-staging-bosh-target}}
-    username: {{diego-deployment-staging-bosh-username}}
-    password: {{diego-deployment-staging-bosh-password}}
-    deployment: {{diego-deployment-staging-bosh-deployment}}
-    ignore_ssl: true
+    access_key_id: {{ci-access-key-id}}
+    bosh_cert: bosh.pem
+    bucket_name: {{diego-private-staging-bucket}}
+    secret_access_key: {{ci-secret-access-key}}
+    secrets_file: diego-staging.yml
+    secrets_passphrase: {{diego-private-staging-passphrase}}
+    region: {{aws-region}}
+- name: common-prod
+  type: cg-common
+  source:
+    bucket_name: {{diego-private-prod-bucket}}
+    access_key_id: {{ci-access-key-id}}
+    secret_access_key: {{ci-secret-access-key}}
+    secrets_file: diego.yml
+    secrets_passphrase: {{diego-private-prod-passphrase}}
+    bosh_cert: bosh.pem
+    region: {{aws-region}}
 - name: diego-production-deployment
   type: 18f-bosh-deployment
   source:
@@ -197,11 +86,77 @@ resources:
     password: {{diego-deployment-prod-bosh-password}}
     deployment: {{diego-deployment-prod-bosh-deployment}}
     ignore_ssl: true
-resource_types:
-- name: slack-notification
-  type: docker-image
+- name: diego-manifests
+  type: git
   source:
-    repository: cfcommunity/slack-notification-resource
+    uri: {{diego-manifests-git-url}}
+    branch: master
+    paths:
+    - diego-*.yml
+    - generate*
+- name: diego-release
+  type: bosh-io-release
+  source:
+    repository: cloudfoundry-incubator/diego-release
+- name: diego-release-repo
+  type: git
+  source:
+    uri: {{diego-release-repo-git-url}}
+    branch: master
+    paths:
+    - releases/diego-*.yml
+- name: diego-staging-deployment
+  type: 18f-bosh-deployment
+  source:
+    target: {{diego-deployment-staging-bosh-target}}
+    username: {{diego-deployment-staging-bosh-username}}
+    password: {{diego-deployment-staging-bosh-password}}
+    deployment: {{diego-deployment-staging-bosh-deployment}}
+    ignore_ssl: true
+- name: diego-stemcell
+  type: s3
+  source:
+    access_key_id: {{ci-access-key-id}}
+    bucket: {{stemcell-bucket}}
+    regexp: light-bosh-stemcell-(.*)-aws-xen-hvm-ubuntu-trusty-go_agent.tgz
+    region_name: {{aws-region}}
+    secret_access_key: {{ci-secret-access-key}}
+- name: etcd-release
+  type: bosh-io-release
+  source:
+    repository: cloudfoundry-incubator/etcd-release
+- name: garden-linux-release
+  type: bosh-io-release
+  source:
+    repository: cloudfoundry-incubator/garden-linux-release
+- name: pipeline-tasks
+  type: git
+  source:
+    uri: {{pipeline-tasks-git-url}}
+    branch: master
+- name: prodbosh-certificate
+  type: s3
+  source:
+    access_key_id: {{ci-access-key-id}}
+    bucket: {{diego-private-prod-bucket}}
+    private: true
+    region_name: {{aws-region}}
+    secret_access_key: {{ci-secret-access-key}}
+    versioned_file: bosh.pem
+#- name: slack
+#  type: slack-notification
+#  source:
+#    url: {{slack-webhook-url}}
+- name: stagingbosh-certificate
+  type: s3
+  source:
+    access_key_id: {{ci-access-key-id}}
+    bucket: {{diego-private-staging-bucket}}
+    private: true
+    region_name: {{aws-region}}
+    secret_access_key: {{ci-secret-access-key}}
+    versioned_file: bosh.pem
+resource_types:
 - name: 18f-bosh-deployment
   type: docker-image
   source:
@@ -210,13 +165,17 @@ resource_types:
   type: docker-image
   source:
     repository: 18fgsa/cg-common-resource
+- name: slack-notification
+  type: docker-image
+  source:
+    repository: cfcommunity/slack-notification-resource
 jobs:
 - name: deploy-diego-staging
   serial: true
   plan:
   - aggregate:
     - get: pipeline-tasks
-    - get: diego-manifests-staging
+    - get: diego-manifests
       trigger: true
     - get: diego-release-repo
       trigger: true
@@ -286,10 +245,10 @@ jobs:
             repository: 18fgsa/concourse-task
         inputs:
         - name: common-staging
-        - name: diego-manifests-staging
+        - name: diego-manifests
         - name: diego-release-repo
         run:
-          path: diego-manifests-staging/generate.sh
+          path: diego-manifests/generate.sh
           args:
           - common-staging/secrets.yml
           - {{cf-deployment-staging}}
@@ -297,7 +256,7 @@ jobs:
           - {{diego-deployment-staging-bosh-target}}
           - {{diego-deployment-staging-bosh-username}}
           - {{diego-deployment-staging-bosh-password}}
-          - generate-diego-stage-manifest/instance-count-overrides-staging.yml
+          - instance-count-overrides-staging.yml
           - generate-diego-stage-manifest/diego-staging-manifest.yml
         outputs:
         - name: generate-diego-stage-manifest
@@ -340,8 +299,9 @@ jobs:
     - get: pipeline-tasks
     - get: diego-staging-deployment
       passed: [deploy-diego-staging]
-    - get: diego-manifests-prod
+    - get: diego-manifests
       trigger: true
+      passed: [deploy-diego-staging]
     - get: diego-release-repo
       params: {submodules: none}
     - get: common-prod
@@ -409,10 +369,10 @@ jobs:
             repository: 18fgsa/concourse-task
         inputs:
         - name: common-prod
-        - name: diego-manifests-prod
+        - name: diego-manifests
         - name: diego-release-repo
         run:
-          path: diego-manifests-prod/generate.sh
+          path: diego-manifests/generate.sh
           args:
           - common-prod/secrets.yml
           - {{cf-deployment-prod}}
@@ -420,7 +380,7 @@ jobs:
           - {{diego-deployment-prod-bosh-target}}
           - {{diego-deployment-prod-bosh-username}}
           - {{diego-deployment-prod-bosh-password}}
-          - generate-diego-stage-manifest/instance-count-overrides.yml
+          - instance-count-overrides.yml
           - generate-diego-prod-manifest/diego-prod-manifest.yml
         outputs:
         - name: generate-diego-prod-manifest
@@ -456,70 +416,3 @@ jobs:
 #        channel: {{slack-channel}}
 #        username: {{slack-username}}
 #        icon_url: {{slack-icon-url}}
-#- name: smoke-tests-prod
-#  plan:
-#  - aggregate:
-#    - get: pipeline-tasks
-#    - get: diego-manifests-prod
-#      trigger: true
-#      passed: [deploy-diego-prod]
-#    - get: common
-#      resource: common-prod
-#      trigger: true
-#      passed: [deploy-diego-prod]
-#    - get: diego-stemcell
-#      passed: [deploy-diego-prod]
-#    - get: cg-s3-nessus-agent-release
-#      trigger: true
-#      passed: [deploy-diego-prod]
-#    - get: cg-s3-fisma-release
-#      trigger: true
-#      passed: [deploy-diego-prod]
-#    - get: cg-s3-newrelic-release
-#      trigger: true
-#      passed: [deploy-diego-prod]
-#    - get: cg-s3-collectd-release
-#      trigger: true
-#      passed: [deploy-diego-prod]
-##    - get: cg-s3-18f-diego-release
-##      trigger: true
-#      passed: [deploy-diego-prod]
-#    - get: cg-s3-secureproxy-release
-#      trigger: true
-#      passed: [deploy-diego-prod]
-#    - get: cg-s3-tripwire-release
-#      trigger: true
-#      passed: [deploy-diego-prod]
-#    - get: cg-s3-awslogs-release
-#      trigger: true
-#      passed: [deploy-diego-prod]
-#    - get: diego-release
-#      trigger: true
-#      passed: [deploy-diego-prod]
-#  - task: run-errand
-#    file: pipeline-tasks/bosh-errand.yml
-#    params:
-#      BOSH_TARGET: {{diego-deployment-prod-bosh-target}}
-#      BOSH_USERNAME: {{diego-deployment-prod-bosh-username}}
-#      BOSH_PASSWORD: {{diego-deployment-prod-bosh-password}}
-#      BOSH_DEPLOYMENT_NAME: {{diego-deployment-prod-bosh-deployment}}
-#      BOSH_ERRAND: smoke_tests
-#      BOSH_CACERT: common/boshCA.crt
-##    on_success:
-##      put: slack
-##      params:
-##        text: |
-##          :white_check_mark: Smoke Tests for Diego on production PASSED
-##          <https://ci.cloud.gov/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
-##        channel: {{slack-channel}}
-##        username: {{slack-username}}
-##        icon_url: {{slack-icon-url}}
-##    on_failure:
-##      put: slack
-##      params:
-##        text: |
-##          :x: Smoke Tests for Diego on production FAILED
-##          <https://ci.cloud.gov/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
-##        channel: {{slack-channel}}
-##        username: {{slack-username}}
-##        icon_url: {{slack-icon-url}}
