@@ -121,10 +121,6 @@ resources:
     regexp: light-bosh-stemcell-(.*)-aws-xen-hvm-ubuntu-trusty-go_agent.tgz
     region_name: {{aws-region}}
     secret_access_key: {{ci-secret-access-key}}
-- name: etcd-release
-  type: bosh-io-release
-  source:
-    repository: cloudfoundry-incubator/etcd-release
 - name: garden-linux-release
   type: bosh-io-release
   source:
@@ -200,8 +196,6 @@ jobs:
       trigger: true
     - get: cflinuxfs2-rootfs-release
       trigger: true
-    - get: etcd-release
-      trigger: true
     - get: garden-linux-release
       trigger: true
     - get: stagingbosh-certificate
@@ -211,16 +205,6 @@ jobs:
       file: pipeline-tasks/upload-release.yml
       input_mapping:
         release: cflinuxfs2-rootfs-release
-        certificate: stagingbosh-certificate
-      params:
-        BOSH_USERNAME: {{diego-deployment-staging-bosh-username}}
-        BOSH_PASSWORD: {{diego-deployment-staging-bosh-password}}
-        BOSH_TARGET: {{diego-deployment-staging-bosh-target}}
-        BOSH_CERT: bosh.pem
-    - task: upload-etcd-release
-      file: pipeline-tasks/upload-release.yml
-      input_mapping:
-        release: etcd-release
         certificate: stagingbosh-certificate
       params:
         BOSH_USERNAME: {{diego-deployment-staging-bosh-username}}
@@ -327,8 +311,6 @@ jobs:
       trigger: true
     - get: cflinuxfs2-rootfs-release
       trigger: true
-    - get: etcd-release
-      trigger: true
     - get: garden-linux-release
       trigger: true
     - get: prodbosh-certificate
@@ -338,16 +320,6 @@ jobs:
       file: pipeline-tasks/upload-release.yml
       input_mapping:
         release: cflinuxfs2-rootfs-release
-        certificate: prodbosh-certificate
-      params:
-        BOSH_USERNAME: {{diego-deployment-prod-bosh-username}}
-        BOSH_PASSWORD: {{diego-deployment-prod-bosh-password}}
-        BOSH_TARGET: {{diego-deployment-prod-bosh-target}}
-        BOSH_CERT: bosh.pem
-    - task: upload-etcd-release
-      file: pipeline-tasks/upload-release.yml
-      input_mapping:
-        release: etcd-release
         certificate: prodbosh-certificate
       params:
         BOSH_USERNAME: {{diego-deployment-prod-bosh-username}}
