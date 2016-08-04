@@ -1,6 +1,6 @@
 #!/bin/sh
 
-set -e -x
+set -e
 
 SECRETS=$1
 CF_DEPLOYMENT=$2
@@ -20,6 +20,7 @@ $BOSH_PASSWORD
 EOF
 bosh download manifest $CF_DEPLOYMENT $SCRIPT_PATH/${CF_DEPLOYMENT}.yml
 
+# Call the standard manifest generation script
 diego-release-repo/scripts/generate-deployment-manifest \
   -c $SCRIPT_PATH/${CF_DEPLOYMENT}.yml \
   -i $SECRETS \
@@ -27,6 +28,7 @@ diego-release-repo/scripts/generate-deployment-manifest \
   -n $SCRIPT_PATH/instance-count-overrides.yml \
   -x > $SCRIPT_PATH/diego-intermediate.yml
 
+# Merge in our local additions
 spiff merge \
   diego-release-repo/manifest-generation/misc-templates/bosh.yml \
   $SECRETS \
