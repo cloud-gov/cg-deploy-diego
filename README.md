@@ -5,9 +5,9 @@ This repo contains the source for the Bosh deployment manifest and deployment pi
 ### How to generate the final manifest:
 
 1. Install `spiff`
-1. Copy the secrets example to secrets file:
-`cp diego-secrets-example.yml diego-secrets.yml`
-1. Change all the variables in CAPS from `diego-secrets.yml` to proper values
+1. Copy the secrets example:
+`cp secrets.example.yml diego-secrets.yml`
+1. Change all the variables in CAPS in `diego-secrets.yml` to proper values and add certificates and keys
 1. Run `./generate.sh`
 
 ### How to deploy the manifest:

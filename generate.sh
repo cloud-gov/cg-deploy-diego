@@ -14,6 +14,7 @@ SCRIPT_PATH=$(dirname $0)
 SECRETS_PATH=$(dirname $SECRETS)
 
 # Download the CF manifest
+echo Downloading CF manifest...
 bosh --ca-cert $BOSH_CACERT target $BOSH_TARGET <<EOF 1>/dev/null 2>&1
 $BOSH_USERNAME
 $BOSH_PASSWORD
@@ -21,6 +22,7 @@ EOF
 bosh download manifest $CF_DEPLOYMENT $SCRIPT_PATH/${CF_DEPLOYMENT}.yml
 
 # Call the standard manifest generation script
+echo Generating diego manifest...
 diego-release-repo/scripts/generate-deployment-manifest \
   -c $SCRIPT_PATH/${CF_DEPLOYMENT}.yml \
   -i $SECRETS \
@@ -29,6 +31,7 @@ diego-release-repo/scripts/generate-deployment-manifest \
   -x > $SCRIPT_PATH/diego-intermediate.yml
 
 # Merge in our local additions
+echo Adding local releases and properties...
 spiff merge \
   diego-release-repo/manifest-generation/misc-templates/bosh.yml \
   $SECRETS \
