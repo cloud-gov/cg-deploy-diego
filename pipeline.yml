@@ -181,7 +181,7 @@ resources:
     regexp: awslogs-(.*).tgz
     secret_access_key: {{s3-bosh-releases-secret-access-key}}
     region_name: {{aws-region}}
-- name: deploy-diego-staging
+- name: diego-staging-deployment
   type: 18f-bosh-deployment
   source:
     target: {{diego-deployment-staging-bosh-target}}
@@ -189,7 +189,7 @@ resources:
     password: {{diego-deployment-staging-bosh-password}}
     deployment: {{diego-deployment-staging-bosh-deployment}}
     ignore_ssl: true
-- name: deploy-diego-prod
+- name: diego-production-deployment
   type: 18f-bosh-deployment
   source:
     target: {{diego-deployment-prod-bosh-target}}
@@ -297,10 +297,11 @@ jobs:
           - {{diego-deployment-staging-bosh-target}}
           - {{diego-deployment-staging-bosh-username}}
           - {{diego-deployment-staging-bosh-password}}
+          - generate-diego-stage-manifest/instance-count-overrides-staging.yml
           - generate-diego-stage-manifest/diego-staging-manifest.yml
         outputs:
         - name: generate-diego-stage-manifest
-  - put: deploy-diego-staging
+  - put: diego-staging-deployment
     params:
       cert: {{diego-deployment-staging-bosh-cacert}}
       manifest: generate-diego-stage-manifest/diego-staging-manifest.yml
@@ -337,11 +338,12 @@ jobs:
   plan:
   - aggregate:
     - get: pipeline-tasks
+    - get: diego-staging-deployment
+      passed: [deploy-diego-staging]
     - get: diego-manifests-prod
       trigger: true
     - get: diego-release-repo
       params: {submodules: none}
-      passed: [deploy-diego-staging]
     - get: common-prod
       trigger: true
     - get: diego-stemcell
@@ -418,10 +420,11 @@ jobs:
           - {{diego-deployment-prod-bosh-target}}
           - {{diego-deployment-prod-bosh-username}}
           - {{diego-deployment-prod-bosh-password}}
+          - generate-diego-stage-manifest/instance-count-overrides.yml
           - generate-diego-prod-manifest/diego-prod-manifest.yml
         outputs:
         - name: generate-diego-prod-manifest
-  - put: deploy-diego-prod
+  - put: diego-production-deployment
     params:
       cert: {{diego-deployment-prod-bosh-cacert}}
       manifest: generate-diego-prod-manifest/diego-prod-manifest.yml
