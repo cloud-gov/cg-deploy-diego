@@ -216,7 +216,6 @@ jobs:
   plan:
   - aggregate:
     - get: pipeline-tasks
-      trigger: false
     - get: diego-manifests-staging
       trigger: true
     - get: diego-release-repo
@@ -225,7 +224,6 @@ jobs:
     - get: common-staging
       trigger: true
     - get: diego-stemcell
-      trigger: false
     - get: cg-s3-nessus-agent-release
       trigger: true
     - get: cg-s3-fisma-release
@@ -339,18 +337,14 @@ jobs:
   plan:
   - aggregate:
     - get: pipeline-tasks
-      trigger: false
     - get: diego-manifests-prod
       trigger: true
     - get: diego-release-repo
-      trigger: true
       params: {submodules: none}
       passed: [deploy-diego-staging]
     - get: common-prod
       trigger: true
     - get: diego-stemcell
-      trigger: false
-      passed: [deploy-diego-staging]
     - get: cg-s3-nessus-agent-release
       trigger: true
     - get: cg-s3-fisma-release
@@ -463,7 +457,6 @@ jobs:
 #  plan:
 #  - aggregate:
 #    - get: pipeline-tasks
-#      trigger: false
 #    - get: diego-manifests-prod
 #      trigger: true
 #      passed: [deploy-diego-prod]
@@ -472,7 +465,6 @@ jobs:
 #      trigger: true
 #      passed: [deploy-diego-prod]
 #    - get: diego-stemcell
-#      trigger: false
 #      passed: [deploy-diego-prod]
 #    - get: cg-s3-nessus-agent-release
 #      trigger: true
