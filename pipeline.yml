@@ -139,10 +139,10 @@ resources:
     region_name: {{aws-region}}
     secret_access_key: {{ci-secret-access-key}}
     versioned_file: bosh.pem
-#- name: slack
-#  type: slack-notification
-#  source:
-#    url: {{slack-webhook-url}}
+- name: slack
+  type: slack-notification
+  source:
+    url: {{slack-webhook-url}}
 - name: stagingbosh-certificate
   type: s3
   source:
@@ -259,24 +259,24 @@ jobs:
         - cg-s3-collectd-release/*.tgz
         - cg-s3-tripwire-release/*.tgz
         - cg-s3-awslogs-release/*.tgz
-#    on_success:
-#      put: slack
-#      params:
-#        text: |
-#          :white_check_mark: Successfully deployed Diego on staging
-#          <https://ci.cloud.gov/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
-#        channel: {{slack-channel}}
-#        username: {{slack-username}}
-#        icon_url: {{slack-icon-url}}
-#    on_failure:
-#      put: slack
-#      params:
-#        text: |
-#          :x: FAILED to deploy Diego on staging
-#          <https://ci.cloud.gov/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
-#        channel: {{slack-channel}}
-#        username: {{slack-username}}
-#        icon_url: {{slack-icon-url}}
+    on_success:
+      put: slack
+      params:
+        text: |
+          :white_check_mark: Successfully deployed Diego on staging
+          <https://ci.cloud.gov/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
+        channel: {{slack-channel}}
+        username: {{slack-username}}
+        icon_url: {{slack-icon-url}}
+    on_failure:
+      put: slack
+      params:
+        text: |
+          :x: FAILED to deploy Diego on staging
+          <https://ci.cloud.gov/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
+        channel: {{slack-channel}}
+        username: {{slack-username}}
+        icon_url: {{slack-icon-url}}
 - name: deploy-diego-production
   serial: true
   plan:
@@ -374,21 +374,21 @@ jobs:
         - cg-s3-collectd-release/*.tgz
         - cg-s3-tripwire-release/*.tgz
         - cg-s3-awslogs-release/*.tgz
-#    on_success:
-#      put: slack
-#      params:
-#        text: |
-#          :white_check_mark: Successfully deployed Diego on production
-#          <https://ci.cloud.gov/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
-#        channel: {{slack-channel}}
-#        username: {{slack-username}}
-#        icon_url: {{slack-icon-url}}
-#    on_failure:
-#      put: slack
-#      params:
-#        text: |
-#          :x: FAILED to deploy Diego on production
-#          <https://ci.cloud.gov/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
-#        channel: {{slack-channel}}
-#        username: {{slack-username}}
-#        icon_url: {{slack-icon-url}}
+    on_success:
+      put: slack
+      params:
+        text: |
+          :white_check_mark: Successfully deployed Diego on production
+          <https://ci.cloud.gov/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
+        channel: {{slack-channel}}
+        username: {{slack-username}}
+        icon_url: {{slack-icon-url}}
+    on_failure:
+      put: slack
+      params:
+        text: |
+          :x: FAILED to deploy Diego on production
+          <https://ci.cloud.gov/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
+        channel: {{slack-channel}}
+        username: {{slack-username}}
+        icon_url: {{slack-icon-url}}
