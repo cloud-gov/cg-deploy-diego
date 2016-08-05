@@ -253,12 +253,6 @@ jobs:
         - diego-stemcell/*.tgz
       releases:
         - diego-release/*.tgz
-        - cg-s3-nessus-agent-release/*.tgz
-        - cg-s3-fisma-release/*.tgz
-        - cg-s3-newrelic-release/*.tgz
-        - cg-s3-collectd-release/*.tgz
-        - cg-s3-tripwire-release/*.tgz
-        - cg-s3-awslogs-release/*.tgz
     on_success:
       put: slack
       params:
@@ -368,12 +362,6 @@ jobs:
         - diego-stemcell/*.tgz
       releases:
         - diego-release/*.tgz
-        - cg-s3-nessus-agent-release/*.tgz
-        - cg-s3-fisma-release/*.tgz
-        - cg-s3-newrelic-release/*.tgz
-        - cg-s3-collectd-release/*.tgz
-        - cg-s3-tripwire-release/*.tgz
-        - cg-s3-awslogs-release/*.tgz
     on_success:
       put: slack
       params:
