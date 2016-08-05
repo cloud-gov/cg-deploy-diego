@@ -285,28 +285,39 @@ jobs:
     - get: diego-release-repo
       params: {submodules: none}
       trigger: true
+      passed: [deploy-diego-staging]
     - get: common-prod
       trigger: true
     - get: diego-stemcell
       trigger: true
+      passed: [deploy-diego-staging]
     - get: cg-s3-nessus-agent-release
       trigger: true
+      passed: [deploy-diego-staging]
     - get: cg-s3-fisma-release
       trigger: true
+      passed: [deploy-diego-staging]
     - get: cg-s3-newrelic-release
       trigger: true
+      passed: [deploy-diego-staging]
     - get: cg-s3-collectd-release
       trigger: true
+      passed: [deploy-diego-staging]
     - get: cg-s3-tripwire-release
       trigger: true
+      passed: [deploy-diego-staging]
     - get: cg-s3-awslogs-release
       trigger: true
+      passed: [deploy-diego-staging]
     - get: diego-release
       trigger: true
+      passed: [deploy-diego-staging]
     - get: cflinuxfs2-rootfs-release
       trigger: true
+      passed: [deploy-diego-staging]
     - get: garden-linux-release
       trigger: true
+      passed: [deploy-diego-staging]
     - get: prodbosh-certificate
       trigger: true
   - aggregate:
