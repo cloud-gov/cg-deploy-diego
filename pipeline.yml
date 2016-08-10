@@ -97,7 +97,7 @@ resources:
 - name: diego-release
   type: bosh-io-release
   source:
-    repository: cloudfoundry-incubator/diego-release
+    repository: cloudfoundry/diego-release
 - name: diego-release-repo
   type: git
   source:
@@ -124,7 +124,7 @@ resources:
 - name: garden-linux-release
   type: bosh-io-release
   source:
-    repository: cloudfoundry-incubator/garden-linux-release
+    repository: cloudfoundry/garden-linux-release
 - name: pipeline-tasks
   type: git
   source:
