@@ -27,7 +27,7 @@ This repo contains the source for the BOSH deployment manifest and the Concourse
     ```
 
 1. Change all the variables in CAPS in `diego-secrets.yml` to proper values and add certificates and keys found in `../diego-release/diego-certs/`.
-
+1. Encrypt and place `diego-secrets.yml` in your secrets bucket.
 1. Copy the pipeline credentials example:
 
      `cp credentials.example.yml credentials.yml`
