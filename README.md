@@ -35,7 +35,7 @@ This repo contains the source for the BOSH deployment manifest and the Concourse
 1. Change all the variables in `credentials.yml` to proper values.
 1. Create or update a Concourse pipeline for the deployment:
 
-    `fly -t YOUR_TARGET set-pipeline -p deploy-diego -c pipeline.yml -l diego-secrets.yml`
+    `fly -t YOUR_TARGET set-pipeline -p deploy-diego -c pipeline.yml -l credentials.yml`
 
 1. Unpause the pipeline:
 
