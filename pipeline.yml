@@ -90,7 +90,7 @@ resources:
   type: git
   source:
     uri: {{diego-manifests-git-url}}
-    branch: master
+    branch: {{diego-manifests-git-branch}}
     paths:
     - diego-*.yml
     - generate*
@@ -102,7 +102,7 @@ resources:
   type: git
   source:
     uri: {{diego-release-repo-git-url}}
-    branch: master
+    branch: {{diego-release-repo-git-branch}}
     paths:
     - releases/diego-*.yml
 - name: diego-staging-deployment
@@ -129,7 +129,7 @@ resources:
   type: git
   source:
     uri: {{pipeline-tasks-git-url}}
-    branch: master
+    branch: {{pipeline-tasks-git-url}}
 - name: prodbosh-certificate
   type: s3
   source:
