@@ -36,5 +36,5 @@ echo Adding local releases and properties...
 spiff merge \
   diego-release-repo/manifest-generation/misc-templates/bosh.yml \
   $SECRETS \
-  $SCRIPT_PATH/diego-jobs.yml \
-  $SCRIPT_PATH/diego-intermediate.yml > ${DIEGO_MANIFEST}
+  $SCRIPT_PATH/diego-intermediate.yml \
+  $SCRIPT_PATH/diego-jobs.yml > ${DIEGO_MANIFEST}
