@@ -136,6 +136,9 @@ jobs:
     release: clamav
   - name: snort
     release: snort
+  update:
+    max_in_flight: 1
+    serial: true
 - name: cell_z2
   <<: (( merge ))
   templates:
@@ -158,6 +161,9 @@ jobs:
     release: clamav
   - name: snort
     release: snort
+  update:
+    max_in_flight: 1
+    serial: true
 - name: cc_bridge_z1
   <<: (( merge ))
   templates:
@@ -180,6 +186,9 @@ jobs:
     release: clamav
   - name: snort
     release: snort
+  update:
+    max_in_flight: 1
+    serial: true
 - name: cc_bridge_z2
   <<: (( merge ))
   templates:
@@ -202,6 +211,9 @@ jobs:
     release: clamav
   - name: snort
     release: snort
+  update:
+    max_in_flight: 1
+    serial: true
 - name: route_emitter_z1
   <<: (( merge ))
   templates:
@@ -224,6 +236,9 @@ jobs:
     release: clamav
   - name: snort
     release: snort
+  update:
+    max_in_flight: 1
+    serial: true
 - name: route_emitter_z2
   <<: (( merge ))
   templates:
@@ -246,6 +261,9 @@ jobs:
     release: clamav
   - name: snort
     release: snort
+  update:
+    max_in_flight: 1
+    serial: true
 - name: access_z1
   <<: (( merge ))
   templates:
@@ -268,6 +286,9 @@ jobs:
     release: clamav
   - name: snort
     release: snort
+  update:
+    max_in_flight: 1
+    serial: true
 - name: access_z2
   <<: (( merge ))
   templates:
@@ -290,3 +311,6 @@ jobs:
     release: clamav
   - name: snort
     release: snort
+  update:
+    max_in_flight: 1
+    serial: true
