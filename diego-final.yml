@@ -1,5 +1,5 @@
-templates:
-  update: &update-template
+update-template: &update-template
+  update:
     max_in_flight: 1
     serial: true
 
