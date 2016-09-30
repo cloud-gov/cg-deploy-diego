@@ -1,6 +1,29 @@
+templates:
+  update: &update-template
+    max_in_flight: 1
+    serial: true
+
 update:
   canaries: 1
   canary_watch_time: 5000-120000
   update_watch_time: 5000-120000
   max_in_flight: 1
   serial: true
+
+jobs:
+- name: cell_z1
+  <<: *update-template
+- name: cell_z2
+  <<: *update-template
+- name: cc_bridge_z1
+  <<: *update-template
+- name: cc_bridge_z2
+  <<: *update-template
+- name: route_emitter_z1
+  <<: *update-template
+- name: route_emitter_z2
+  <<: *update-template
+- name: access_z1
+  <<: *update-template
+- name: access_z2
+  <<: *update-template
