@@ -91,9 +91,6 @@ resources:
   source:
     uri: {{diego-manifests-git-url}}
     branch: {{diego-manifests-git-branch}}
-    paths:
-    - diego-*.yml
-    - generate*
 - name: diego-release
   type: bosh-io-release
   source:
