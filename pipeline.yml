@@ -118,10 +118,10 @@ resources:
     regexp: light-bosh-stemcell-(.*)-aws-xen-hvm-ubuntu-trusty-go_agent.tgz
     region_name: {{aws-region}}
     secret_access_key: {{ci-secret-access-key}}
-- name: garden-linux-release
+- name: garden-runc-release
   type: bosh-io-release
   source:
-    repository: cloudfoundry/garden-linux-release
+    repository: cloudfoundry/garden-runc-release
 - name: pipeline-tasks
   type: git
   source:
@@ -193,7 +193,7 @@ jobs:
       trigger: true
     - get: cflinuxfs2-rootfs-release
       trigger: true
-    - get: garden-linux-release
+    - get: garden-runc-release
       trigger: true
     - get: stagingbosh-certificate
       trigger: true
@@ -208,10 +208,10 @@ jobs:
         BOSH_PASSWORD: {{diego-deployment-staging-bosh-password}}
         BOSH_TARGET: {{diego-deployment-staging-bosh-target}}
         BOSH_CERT: bosh.pem
-    - task: upload-garden-linux-release
+    - task: upload-garden-runc-release
       file: pipeline-tasks/upload-release.yml
       input_mapping:
-        release: garden-linux-release
+        release: garden-runc-release
         certificate: stagingbosh-certificate
       params:
         BOSH_USERNAME: {{diego-deployment-staging-bosh-username}}
@@ -312,7 +312,7 @@ jobs:
     - get: cflinuxfs2-rootfs-release
       trigger: true
       passed: [deploy-diego-staging]
-    - get: garden-linux-release
+    - get: garden-runc-release
       trigger: true
       passed: [deploy-diego-staging]
     - get: prodbosh-certificate
@@ -328,10 +328,10 @@ jobs:
         BOSH_PASSWORD: {{diego-deployment-prod-bosh-password}}
         BOSH_TARGET: {{diego-deployment-prod-bosh-target}}
         BOSH_CERT: bosh.pem
-    - task: upload-garden-linux-release
+    - task: upload-garden-runc-release
       file: pipeline-tasks/upload-release.yml
       input_mapping:
-        release: garden-linux-release
+        release: garden-runc-release
         certificate: prodbosh-certificate
       params:
         BOSH_USERNAME: {{diego-deployment-prod-bosh-username}}
