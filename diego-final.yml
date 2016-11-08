@@ -13,8 +13,10 @@ update:
 jobs:
 - name: cell_z1
   <<: *update-template
+  persistent_disk_pool: database_disks
 - name: cell_z2
   <<: *update-template
+  persistent_disk_pool: database_disks
 - name: cc_bridge_z1
   <<: *update-template
 - name: cc_bridge_z2
