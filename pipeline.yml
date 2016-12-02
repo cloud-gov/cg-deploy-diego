@@ -1,63 +1,9 @@
-groups: []
 resources:
 - name: cflinuxfs2-rootfs-release
   type: bosh-io-release
   source:
     repository: cloudfoundry/cflinuxfs2-rootfs-release
-- name: cg-s3-nessus-agent-release
-  type: s3
-  source:
-    access_key_id: {{s3-bosh-releases-access-key-id}}
-    bucket: {{s3-bosh-releases-bucket}}
-    private: true
-    regexp: nessus-agent-(.*).tgz
-    secret_access_key: {{s3-bosh-releases-secret-access-key}}
-    region_name: {{aws-region}}
-- name: cg-s3-fisma-release
-  type: s3
-  source:
-    access_key_id: {{s3-bosh-releases-access-key-id}}
-    bucket: {{s3-bosh-releases-bucket}}
-    private: true
-    regexp: fisma-(.*).tgz
-    secret_access_key: {{s3-bosh-releases-secret-access-key}}
-    region_name: {{aws-region}}
-- name: cg-s3-newrelic-release
-  type: s3
-  source:
-    access_key_id: {{s3-bosh-releases-access-key-id}}
-    bucket: {{s3-bosh-releases-bucket}}
-    private: true
-    regexp: newrelic-(.*).tgz
-    secret_access_key: {{s3-bosh-releases-secret-access-key}}
-    region_name: {{aws-region}}
-- name: cg-s3-collectd-release
-  type: s3
-  source:
-    access_key_id: {{s3-bosh-releases-access-key-id}}
-    bucket: {{s3-bosh-releases-bucket}}
-    private: true
-    regexp: collectd-(.*).tgz
-    secret_access_key: {{s3-bosh-releases-secret-access-key}}
-    region_name: {{aws-region}}
-- name: cg-s3-tripwire-release
-  type: s3
-  source:
-    access_key_id: {{s3-bosh-releases-access-key-id}}
-    bucket: {{s3-bosh-releases-bucket}}
-    private: true
-    regexp: tripwire-(.*).tgz
-    secret_access_key: {{s3-bosh-releases-secret-access-key}}
-    region_name: {{aws-region}}
-- name: cg-s3-awslogs-release
-  type: s3
-  source:
-    access_key_id: {{s3-bosh-releases-access-key-id}}
-    bucket: {{s3-bosh-releases-bucket}}
-    private: true
-    regexp: awslogs-(.*).tgz
-    secret_access_key: {{s3-bosh-releases-secret-access-key}}
-    region_name: {{aws-region}}
+
 - name: common-staging
   type: cg-common
   source:
@@ -68,6 +14,7 @@ resources:
     secrets_file: diego-staging.yml
     secrets_passphrase: {{diego-private-staging-passphrase}}
     region: {{aws-region}}
+
 - name: common-prod
   type: cg-common
   source:
@@ -78,6 +25,7 @@ resources:
     secrets_passphrase: {{diego-private-prod-passphrase}}
     bosh_cert: bosh.pem
     region: {{aws-region}}
+
 - name: diego-production-deployment
   type: 18f-bosh-deployment
   source:
@@ -86,15 +34,18 @@ resources:
     password: {{diego-deployment-prod-bosh-password}}
     deployment: {{diego-deployment-prod-bosh-deployment}}
     ignore_ssl: true
+
 - name: diego-manifests
   type: git
   source:
     uri: {{diego-manifests-git-url}}
     branch: {{diego-manifests-git-branch}}
+
 - name: diego-release
   type: bosh-io-release
   source:
     repository: cloudfoundry/diego-release
+
 - name: diego-release-repo
   type: git
   source:
@@ -102,6 +53,7 @@ resources:
     branch: {{diego-release-repo-git-branch}}
     paths:
     - releases/diego-*.yml
+
 - name: diego-staging-deployment
   type: 18f-bosh-deployment
   source:
@@ -110,6 +62,7 @@ resources:
     password: {{diego-deployment-staging-bosh-password}}
     deployment: {{diego-deployment-staging-bosh-deployment}}
     ignore_ssl: true
+
 - name: diego-stemcell
   type: s3
   source:
@@ -118,15 +71,18 @@ resources:
     regexp: light-bosh-stemcell-(.*)-aws-xen-hvm-ubuntu-trusty-go_agent.tgz
     region_name: {{aws-region}}
     secret_access_key: {{ci-secret-access-key}}
+
 - name: garden-runc-release
   type: bosh-io-release
   source:
     repository: cloudfoundry/garden-runc-release
+
 - name: pipeline-tasks
   type: git
   source:
     uri: {{pipeline-tasks-git-url}}
     branch: {{pipeline-tasks-git-branch}}
+
 - name: prodbosh-certificate
   type: s3
   source:
@@ -149,6 +105,7 @@ resources:
     region_name: {{aws-region}}
     secret_access_key: {{ci-secret-access-key}}
     versioned_file: bosh.pem
+
 resource_types:
 - name: 18f-bosh-deployment
   type: docker-image
@@ -162,6 +119,7 @@ resource_types:
   type: docker-image
   source:
     repository: cfcommunity/slack-notification-resource
+
 jobs:
 - name: deploy-diego-staging
   serial: true
@@ -176,18 +134,6 @@ jobs:
     - get: common-staging
       trigger: true
     - get: diego-stemcell
-      trigger: true
-    - get: cg-s3-nessus-agent-release
-      trigger: true
-    - get: cg-s3-fisma-release
-      trigger: true
-    - get: cg-s3-newrelic-release
-      trigger: true
-    - get: cg-s3-collectd-release
-      trigger: true
-    - get: cg-s3-tripwire-release
-      trigger: true
-    - get: cg-s3-awslogs-release
       trigger: true
     - get: diego-release
       trigger: true
@@ -247,27 +193,28 @@ jobs:
       cert: {{diego-deployment-staging-bosh-cacert}}
       manifest: generate-diego-stage-manifest/diego-staging-manifest.yml
       stemcells:
-        - diego-stemcell/*.tgz
+      - diego-stemcell/*.tgz
       releases:
-        - diego-release/*.tgz
-    on_success:
-      put: slack
-      params:
-        text: |
-          :white_check_mark: Successfully deployed Diego on staging
-          <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
-        channel: {{slack-channel}}
-        username: {{slack-username}}
-        icon_url: {{slack-icon-url}}
-    on_failure:
-      put: slack
-      params:
-        text: |
-          :x: FAILED to deploy Diego on staging
-          <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
-        channel: {{slack-channel}}
-        username: {{slack-username}}
-        icon_url: {{slack-icon-url}}
+      - diego-release/*.tgz
+  on_success:
+    put: slack
+    params:
+      text: |
+        :white_check_mark: Successfully deployed Diego on staging
+        <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
+      channel: {{slack-channel}}
+      username: {{slack-username}}
+      icon_url: {{slack-icon-url}}
+  on_failure:
+    put: slack
+    params:
+      text: |
+        :x: FAILED to deploy Diego on staging
+        <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
+      channel: {{slack-channel}}
+      username: {{slack-username}}
+      icon_url: {{slack-icon-url}}
+
 - name: deploy-diego-production
   serial: true
   plan:
@@ -286,24 +233,6 @@ jobs:
     - get: common-prod
       trigger: true
     - get: diego-stemcell
-      trigger: true
-      passed: [deploy-diego-staging]
-    - get: cg-s3-nessus-agent-release
-      trigger: true
-      passed: [deploy-diego-staging]
-    - get: cg-s3-fisma-release
-      trigger: true
-      passed: [deploy-diego-staging]
-    - get: cg-s3-newrelic-release
-      trigger: true
-      passed: [deploy-diego-staging]
-    - get: cg-s3-collectd-release
-      trigger: true
-      passed: [deploy-diego-staging]
-    - get: cg-s3-tripwire-release
-      trigger: true
-      passed: [deploy-diego-staging]
-    - get: cg-s3-awslogs-release
       trigger: true
       passed: [deploy-diego-staging]
     - get: diego-release
@@ -367,24 +296,24 @@ jobs:
       cert: {{diego-deployment-prod-bosh-cacert}}
       manifest: generate-diego-prod-manifest/diego-prod-manifest.yml
       stemcells:
-        - diego-stemcell/*.tgz
+      - diego-stemcell/*.tgz
       releases:
-        - diego-release/*.tgz
-    on_success:
-      put: slack
-      params:
-        text: |
-          :white_check_mark: Successfully deployed Diego on production
-          <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
-        channel: {{slack-channel}}
-        username: {{slack-username}}
-        icon_url: {{slack-icon-url}}
-    on_failure:
-      put: slack
-      params:
-        text: |
-          :x: FAILED to deploy Diego on production
-          <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
-        channel: {{slack-channel}}
-        username: {{slack-username}}
-        icon_url: {{slack-icon-url}}
+      - diego-release/*.tgz
+  on_success:
+    put: slack
+    params:
+      text: |
+        :white_check_mark: Successfully deployed Diego on production
+        <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
+      channel: {{slack-channel}}
+      username: {{slack-username}}
+      icon_url: {{slack-icon-url}}
+  on_failure:
+    put: slack
+    params:
+      text: |
+        :x: FAILED to deploy Diego on production
+        <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
+      channel: {{slack-channel}}
+      username: {{slack-username}}
+      icon_url: {{slack-icon-url}}
