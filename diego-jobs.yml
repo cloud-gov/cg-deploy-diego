@@ -6,10 +6,8 @@ properties:
 jobs:
 - <<: (( merge ))
 - name: cell_z1
-  persistent_disk_pool: database_disks
   <<: (( merge ))
 - name: cell_z2
-  persistent_disk_pool: database_disks
   <<: (( merge ))
 - name: access_z1
   <<: (( merge ))
