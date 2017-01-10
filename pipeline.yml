@@ -1,4 +1,13 @@
 resources:
+- name: master-bosh-root-cert
+  type: s3
+  source:
+    access_key_id: {{ci-access-key-id}}
+    bucket: {{diego-private-prod-bucket}}
+    region_name: {{aws-region}}
+    secret_access_key: {{ci-secret-access-key}}
+    versioned_file: master-bosh.crt
+
 - name: cflinuxfs2-rootfs-release
   type: bosh-io-release
   source:
@@ -83,28 +92,10 @@ resources:
     uri: {{pipeline-tasks-git-url}}
     branch: {{pipeline-tasks-git-branch}}
 
-- name: prodbosh-certificate
-  type: s3
-  source:
-    access_key_id: {{ci-access-key-id}}
-    bucket: {{diego-private-prod-bucket}}
-    private: true
-    region_name: {{aws-region}}
-    secret_access_key: {{ci-secret-access-key}}
-    versioned_file: bosh.pem
 - name: slack
   type: slack-notification
   source:
     url: {{slack-webhook-url}}
-- name: stagingbosh-certificate
-  type: s3
-  source:
-    access_key_id: {{ci-access-key-id}}
-    bucket: {{diego-private-staging-bucket}}
-    private: true
-    region_name: {{aws-region}}
-    secret_access_key: {{ci-secret-access-key}}
-    versioned_file: bosh.pem
 
 resource_types:
 - name: 18f-bosh-deployment
@@ -125,6 +116,8 @@ jobs:
   serial: true
   plan:
   - aggregate:
+    - get: certificate
+      resource: master-bosh-root-cert
     - get: pipeline-tasks
     - get: diego-manifests
       trigger: true
@@ -141,29 +134,25 @@ jobs:
       trigger: true
     - get: garden-runc-release
       trigger: true
-    - get: stagingbosh-certificate
-      trigger: true
   - aggregate:
     - task: upload-cflinuxfs2-rootfs-release
       file: pipeline-tasks/upload-release.yml
       input_mapping:
         release: cflinuxfs2-rootfs-release
-        certificate: stagingbosh-certificate
       params:
         BOSH_USERNAME: {{diego-deployment-staging-bosh-username}}
         BOSH_PASSWORD: {{diego-deployment-staging-bosh-password}}
         BOSH_TARGET: {{diego-deployment-staging-bosh-target}}
-        BOSH_CERT: bosh.pem
+        BOSH_CERT: master-bosh.crt
     - task: upload-garden-runc-release
       file: pipeline-tasks/upload-release.yml
       input_mapping:
         release: garden-runc-release
-        certificate: stagingbosh-certificate
       params:
         BOSH_USERNAME: {{diego-deployment-staging-bosh-username}}
         BOSH_PASSWORD: {{diego-deployment-staging-bosh-password}}
         BOSH_TARGET: {{diego-deployment-staging-bosh-target}}
-        BOSH_CERT: bosh.pem
+        BOSH_CERT: master-bosh.crt
     - task: generate-diego-stage-manifest
       config:
         platform: linux
@@ -172,6 +161,7 @@ jobs:
           source:
             repository: 18fgsa/concourse-task
         inputs:
+        - name: certificate
         - name: common-staging
         - name: diego-manifests
         - name: diego-release-repo
@@ -219,6 +209,8 @@ jobs:
   serial: true
   plan:
   - aggregate:
+    - get: certificate
+      resource: master-bosh-root-cert
     - get: pipeline-tasks
     - get: diego-staging-deployment
       passed: [deploy-diego-staging]
@@ -244,29 +236,25 @@ jobs:
     - get: garden-runc-release
       trigger: true
       passed: [deploy-diego-staging]
-    - get: prodbosh-certificate
-      trigger: true
   - aggregate:
     - task: upload-cflinuxfs2-rootfs-release
       file: pipeline-tasks/upload-release.yml
       input_mapping:
         release: cflinuxfs2-rootfs-release
-        certificate: prodbosh-certificate
       params:
         BOSH_USERNAME: {{diego-deployment-prod-bosh-username}}
         BOSH_PASSWORD: {{diego-deployment-prod-bosh-password}}
         BOSH_TARGET: {{diego-deployment-prod-bosh-target}}
-        BOSH_CERT: bosh.pem
+        BOSH_CERT: master-bosh.crt
     - task: upload-garden-runc-release
       file: pipeline-tasks/upload-release.yml
       input_mapping:
         release: garden-runc-release
-        certificate: prodbosh-certificate
       params:
         BOSH_USERNAME: {{diego-deployment-prod-bosh-username}}
         BOSH_PASSWORD: {{diego-deployment-prod-bosh-password}}
         BOSH_TARGET: {{diego-deployment-prod-bosh-target}}
-        BOSH_CERT: bosh.pem
+        BOSH_CERT: master-bosh.crt
     - task: generate-diego-prod-manifest
       config:
         platform: linux
@@ -275,6 +263,7 @@ jobs:
           source:
             repository: 18fgsa/concourse-task
         inputs:
+        - name: certificate
         - name: common-prod
         - name: diego-manifests
         - name: diego-release-repo
