@@ -28,6 +28,8 @@ diego-release-repo/scripts/generate-deployment-manifest \
   -c $SCRIPT_PATH/${CF_DEPLOYMENT}.yml \
   -i $SECRETS \
   -p $SECRETS \
+  -s $SECRETS \
+  -v $SCRIPT_PATH/release-versions.yml \
   -n $SCRIPT_PATH/$INSTANCE_COUNT_OVERRIDES \
   -x > $SCRIPT_PATH/diego-intermediate.yml
 
