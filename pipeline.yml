@@ -8,10 +8,10 @@ resources:
     secret_access_key: {{ci-secret-access-key}}
     versioned_file: master-bosh.crt
 
-- name: cflinuxfs2-rootfs-release
+- name: cflinuxfs2-release
   type: bosh-io-release
   source:
-    repository: cloudfoundry/cflinuxfs2-rootfs-release
+    repository: cloudfoundry/cflinuxfs2-release
 
 - name: common-staging
   type: cg-common
@@ -130,15 +130,15 @@ jobs:
       trigger: true
     - get: diego-release
       trigger: true
-    - get: cflinuxfs2-rootfs-release
+    - get: cflinuxfs2-release
       trigger: true
     - get: garden-runc-release
       trigger: true
   - aggregate:
-    - task: upload-cflinuxfs2-rootfs-release
+    - task: upload-cflinuxfs2-release
       file: pipeline-tasks/upload-release.yml
       input_mapping:
-        release: cflinuxfs2-rootfs-release
+        release: cflinuxfs2-release
       params:
         BOSH_USERNAME: {{diego-deployment-staging-bosh-username}}
         BOSH_PASSWORD: {{diego-deployment-staging-bosh-password}}
@@ -230,17 +230,17 @@ jobs:
     - get: diego-release
       trigger: true
       passed: [deploy-diego-staging]
-    - get: cflinuxfs2-rootfs-release
+    - get: cflinuxfs2-release
       trigger: true
       passed: [deploy-diego-staging]
     - get: garden-runc-release
       trigger: true
       passed: [deploy-diego-staging]
   - aggregate:
-    - task: upload-cflinuxfs2-rootfs-release
+    - task: upload-cflinuxfs2-release
       file: pipeline-tasks/upload-release.yml
       input_mapping:
-        release: cflinuxfs2-rootfs-release
+        release: cflinuxfs2-release
       params:
         BOSH_USERNAME: {{diego-deployment-prod-bosh-username}}
         BOSH_PASSWORD: {{diego-deployment-prod-bosh-password}}
