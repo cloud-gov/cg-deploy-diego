@@ -1,0 +1,8 @@
+jobs:
+- name: cell_platform_z1
+  instances: 1
+  properties:
+    diego:
+      rep:
+        placement_tags: [platform]
+  inject: (( inject jobs.cell_z1 ))

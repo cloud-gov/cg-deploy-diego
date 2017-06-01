@@ -9,7 +9,8 @@ BOSH_TARGET=$4
 BOSH_USERNAME=$5
 BOSH_PASSWORD=$6
 INSTANCE_COUNT_OVERRIDES=$7
-DIEGO_MANIFEST=$8
+ISOLATION_CELLS=$8
+DIEGO_MANIFEST=$9
 
 SCRIPT_PATH=$(dirname $0)
 SECRETS_PATH=$(dirname $SECRETS)
@@ -40,4 +41,10 @@ spiff merge \
   $SECRETS \
   $SCRIPT_PATH/diego-jobs.yml \
   $SCRIPT_PATH/diego-intermediate.yml \
-  $SCRIPT_PATH/diego-final.yml > ${DIEGO_MANIFEST}
+  $SCRIPT_PATH/diego-final.yml \
+  > ${SCRIPT_PATH}/diego-intermediate-merged.yml
+
+spruce merge \
+  ${SCRIPT_PATH}/diego-intermediate-merged.yml \
+  ${SCRIPT_PATH}/${ISOLATION_CELLS} \
+  > ${DIEGO_MANIFEST}

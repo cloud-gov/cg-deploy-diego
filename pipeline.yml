@@ -175,6 +175,7 @@ jobs:
           - {{diego-deployment-staging-bosh-username}}
           - {{diego-deployment-staging-bosh-password}}
           - instance-count-overrides-staging.yml
+          - isolation-cells-staging.yml
           - generate-diego-stage-manifest/diego-staging-manifest.yml
         outputs:
         - name: generate-diego-stage-manifest
@@ -277,6 +278,7 @@ jobs:
           - {{diego-deployment-prod-bosh-username}}
           - {{diego-deployment-prod-bosh-password}}
           - instance-count-overrides.yml
+          - isolation-cells-production.yml
           - generate-diego-prod-manifest/diego-prod-manifest.yml
         outputs:
         - name: generate-diego-prod-manifest
