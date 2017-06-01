@@ -5,8 +5,12 @@ properties:
 
 jobs:
 - <<: (( merge ))
-- name: cell_z1
+- name: cell_z1 &cell_z1
   <<: (( merge ))
+- name: cell_platform_z1
+  <<: *cell_z1
+  placement_tags:
+  - platform
 - name: cell_z2
   <<: (( merge ))
 - name: access_z1
