@@ -44,6 +44,11 @@ spiff merge \
   $SCRIPT_PATH/diego-final.yml \
   > ${SCRIPT_PATH}/diego-intermediate-merged.yml
 
+# Create additional cells with placement_tags by copying the job definition
+# from the output of the upstream manifest generation scripts
+# Spruce is used here as this can't be done with spiff, but we are stuck
+# with spiff for the initial merge until upstream drops it from their scripts
+echo Adding isolation cells...
 spruce merge \
   ${SCRIPT_PATH}/diego-intermediate-merged.yml \
   ${SCRIPT_PATH}/${ISOLATION_CELLS} \
