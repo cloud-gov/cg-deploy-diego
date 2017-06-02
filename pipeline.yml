@@ -187,6 +187,15 @@ jobs:
       - diego-stemcell/*.tgz
       releases:
       - diego-release/*.tgz
+  - task: update-isolation-segments
+    file: diego-manifests/update-isolation-segments.yml
+    params:
+      CF_API_URL: {{cf-api-url-staging}}
+      CF_USERNAME: {{cf-username-staging}}
+      CF_PASSWORD: {{cf-password-staging}}
+      PLATFORM_ISOLATION_SEGMENT: {{platform-isolation-segment-staging}}
+      PLATFORM_ORGANIZATION: {{platform-organization-staging}}
+      PLATFORM_SPACE: {{platform-space-staging}}
   on_success:
     put: slack
     params:
@@ -290,6 +299,15 @@ jobs:
       - diego-stemcell/*.tgz
       releases:
       - diego-release/*.tgz
+  - task: update-isolation-segments
+    file: diego-manifests/update-isolation-segments.yml
+    params:
+      CF_API_URL: {{cf-api-url-production}}
+      CF_USERNAME: {{cf-username-production}}
+      CF_PASSWORD: {{cf-password-production}}
+      PLATFORM_ISOLATION_SEGMENT: {{platform-isolation-segment-production}}
+      PLATFORM_ORGANIZATION: {{platform-organization-production}}
+      PLATFORM_SPACE: {{platform-space-production}}
   on_success:
     put: slack
     params:
