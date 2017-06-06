@@ -10,7 +10,8 @@ BOSH_USERNAME=$5
 BOSH_PASSWORD=$6
 INSTANCE_COUNT_OVERRIDES=$7
 ISOLATION_CELLS=$8
-DIEGO_MANIFEST=$9
+TERRAFORM_OUTPUT=$9
+DIEGO_MANIFEST=$10
 
 SCRIPT_PATH=$(dirname $0)
 SECRETS_PATH=$(dirname $SECRETS)
@@ -49,7 +50,8 @@ spiff merge \
 # Spruce is used here as this can't be done with spiff, but we are stuck
 # with spiff for the initial merge until upstream drops it from their scripts
 echo Adding isolation cells...
-spruce merge \
+spruce merge --prune terraform_outputs \
   ${SCRIPT_PATH}/diego-intermediate-merged.yml \
   ${SCRIPT_PATH}/${ISOLATION_CELLS} \
+  ${TERRAFORM_OUTPUT} \
   > ${DIEGO_MANIFEST}
