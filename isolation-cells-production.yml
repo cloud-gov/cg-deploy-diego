@@ -1,5 +1,6 @@
 jobs:
 - name: cell_platform_z1
+  vm_extensions: [diego-platform-cell-profile]
   instances: 1
   properties:
     diego:
@@ -7,6 +8,7 @@ jobs:
         placement_tags: [platform]
   inject: (( inject jobs.cell_z1 ))
 - name: cell_platform_z2
+  vm_extensions: [diego-platform-cell-profile]
   instances: 1
   properties:
     diego:
