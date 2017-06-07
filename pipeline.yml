@@ -44,6 +44,20 @@ resources:
     deployment: {{diego-deployment-prod-bosh-deployment}}
     ignore_ssl: true
 
+- name: terraform-yaml-staging
+  type: s3-iam
+  source:
+    bucket: {{tf-state-bucket-staging}}
+    versioned_file: {{tf-state-file-staging}}
+    region_name: {{aws-region}}
+
+- name: terraform-yaml-production
+  type: s3-iam
+  source:
+    bucket: {{tf-state-bucket-production}}
+    versioned_file: {{tf-state-file-production}}
+    region_name: {{aws-region}}
+
 - name: diego-manifests
   type: git
   source:
@@ -110,6 +124,10 @@ resource_types:
   type: docker-image
   source:
     repository: cfcommunity/slack-notification-resource
+- name: s3-iam
+  type: docker-image
+  source:
+    repository: 18fgsa/s3-resource
 
 jobs:
 - name: deploy-diego-staging
@@ -134,6 +152,8 @@ jobs:
       trigger: true
     - get: garden-runc-release
       trigger: true
+    - get: terraform-yaml
+      resource: terraform-yaml-staging
   - aggregate:
     - task: upload-cflinuxfs2-release
       file: pipeline-tasks/upload-release.yml
@@ -165,6 +185,7 @@ jobs:
         - name: common-staging
         - name: diego-manifests
         - name: diego-release-repo
+        - name: terraform-yaml
         run:
           path: diego-manifests/generate.sh
           args:
@@ -175,6 +196,8 @@ jobs:
           - {{diego-deployment-staging-bosh-username}}
           - {{diego-deployment-staging-bosh-password}}
           - instance-count-overrides-staging.yml
+          - isolation-cells-staging.yml
+          - terraform-yaml/state.yml
           - generate-diego-stage-manifest/diego-staging-manifest.yml
         outputs:
         - name: generate-diego-stage-manifest
@@ -186,6 +209,15 @@ jobs:
       - diego-stemcell/*.tgz
       releases:
       - diego-release/*.tgz
+  - task: update-isolation-segments
+    file: diego-manifests/update-isolation-segments.yml
+    params:
+      CF_API_URL: {{cf-api-url-staging}}
+      CF_USERNAME: {{cf-username-staging}}
+      CF_PASSWORD: {{cf-password-staging}}
+      PLATFORM_ISOLATION_SEGMENT: {{platform-isolation-segment-staging}}
+      PLATFORM_ORGANIZATION: {{platform-organization-staging}}
+      PLATFORM_SPACE: {{platform-space-staging}}
   on_success:
     put: slack
     params:
@@ -236,6 +268,8 @@ jobs:
     - get: garden-runc-release
       trigger: true
       passed: [deploy-diego-staging]
+    - get: terraform-yaml
+      resource: terraform-yaml-production
   - aggregate:
     - task: upload-cflinuxfs2-release
       file: pipeline-tasks/upload-release.yml
@@ -267,6 +301,7 @@ jobs:
         - name: common-prod
         - name: diego-manifests
         - name: diego-release-repo
+        - name: terraform-yaml
         run:
           path: diego-manifests/generate.sh
           args:
@@ -277,6 +312,8 @@ jobs:
           - {{diego-deployment-prod-bosh-username}}
           - {{diego-deployment-prod-bosh-password}}
           - instance-count-overrides.yml
+          - isolation-cells-production.yml
+          - terraform-yaml/state.yml
           - generate-diego-prod-manifest/diego-prod-manifest.yml
         outputs:
         - name: generate-diego-prod-manifest
@@ -288,6 +325,15 @@ jobs:
       - diego-stemcell/*.tgz
       releases:
       - diego-release/*.tgz
+  - task: update-isolation-segments
+    file: diego-manifests/update-isolation-segments.yml
+    params:
+      CF_API_URL: {{cf-api-url-production}}
+      CF_USERNAME: {{cf-username-production}}
+      CF_PASSWORD: {{cf-password-production}}
+      PLATFORM_ISOLATION_SEGMENT: {{platform-isolation-segment-production}}
+      PLATFORM_ORGANIZATION: {{platform-organization-production}}
+      PLATFORM_SPACE: {{platform-space-production}}
   on_success:
     put: slack
     params:

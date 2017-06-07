@@ -9,7 +9,9 @@ BOSH_TARGET=$4
 BOSH_USERNAME=$5
 BOSH_PASSWORD=$6
 INSTANCE_COUNT_OVERRIDES=$7
-DIEGO_MANIFEST=$8
+ISOLATION_CELLS=$8
+TERRAFORM_OUTPUT=$9
+DIEGO_MANIFEST=$10
 
 SCRIPT_PATH=$(dirname $0)
 SECRETS_PATH=$(dirname $SECRETS)
@@ -40,4 +42,16 @@ spiff merge \
   $SECRETS \
   $SCRIPT_PATH/diego-jobs.yml \
   $SCRIPT_PATH/diego-intermediate.yml \
-  $SCRIPT_PATH/diego-final.yml > ${DIEGO_MANIFEST}
+  $SCRIPT_PATH/diego-final.yml \
+  > ${SCRIPT_PATH}/diego-intermediate-merged.yml
+
+# Create additional cells with placement_tags by copying the job definition
+# from the output of the upstream manifest generation scripts
+# Spruce is used here as this can't be done with spiff, but we are stuck
+# with spiff for the initial merge until upstream drops it from their scripts
+echo Adding isolation cells...
+spruce merge --prune terraform_outputs \
+  ${SCRIPT_PATH}/diego-intermediate-merged.yml \
+  ${SCRIPT_PATH}/${ISOLATION_CELLS} \
+  ${TERRAFORM_OUTPUT} \
+  > ${DIEGO_MANIFEST}
