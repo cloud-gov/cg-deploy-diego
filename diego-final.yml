@@ -29,6 +29,9 @@ jobs:
   <<: *update-template
 
 properties:
+  diego:
+    executor:
+      container_metrics_report_interval: 15s
   cflinuxfs2-rootfs:
     # AWS RDS certificate bundle, including GovCloud intermediate certificate
     # http://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/UsingWithRDS.SSL.html
