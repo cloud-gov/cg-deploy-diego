@@ -1,11 +1,9 @@
 resources:
 - name: master-bosh-root-cert
-  type: s3
+  type: s3-iam
   source:
-    access_key_id: {{ci-access-key-id}}
     bucket: {{diego-private-prod-bucket}}
     region_name: {{aws-region}}
-    secret_access_key: {{ci-secret-access-key}}
     versioned_file: master-bosh.crt
 
 - name: cflinuxfs2-release
@@ -16,10 +14,8 @@ resources:
 - name: common-staging
   type: cg-common
   source:
-    access_key_id: {{ci-access-key-id}}
     bosh_cert: bosh.pem
     bucket_name: {{diego-private-staging-bucket}}
-    secret_access_key: {{ci-secret-access-key}}
     secrets_file: diego-staging.yml
     secrets_passphrase: {{diego-private-staging-passphrase}}
     region: {{aws-region}}
@@ -28,8 +24,6 @@ resources:
   type: cg-common
   source:
     bucket_name: {{diego-private-prod-bucket}}
-    access_key_id: {{ci-access-key-id}}
-    secret_access_key: {{ci-secret-access-key}}
     secrets_file: diego.yml
     secrets_passphrase: {{diego-private-prod-passphrase}}
     bosh_cert: bosh.pem
@@ -87,13 +81,11 @@ resources:
     ignore_ssl: true
 
 - name: diego-stemcell
-  type: s3
+  type: s3-iam
   source:
-    access_key_id: {{ci-access-key-id}}
     bucket: {{stemcell-bucket}}
     regexp: light-bosh-stemcell-(.*)-aws-xen-hvm-ubuntu-trusty-go_agent.tgz
     region_name: {{aws-region}}
-    secret_access_key: {{ci-secret-access-key}}
 
 - name: garden-runc-release
   type: bosh-io-release
